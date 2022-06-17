@@ -1,4 +1,4 @@
-import React, { FC, MouseEventHandler } from 'react';
+import React, { FC, MouseEventHandler, useState } from 'react';
 import { FormattedDate } from 'react-intl';
 import DOMPurify from 'isomorphic-dompurify';
 import { useNavigate } from 'react-router-dom';
@@ -11,9 +11,19 @@ import { DeletePostButton, EditPostButton } from '../ui-lib';
 import { openConfirm } from '../store';
 import BarTags from './bar-tags';
 import Likes from './likes';
+import {
+  PublishButton,
+  RejectButton,
+  PublishedButton,
+  RemoveFromPublicationButton,
+} from '../ui-lib/buttons';
 
 type TArticleProps = {
   slug: string;
+};
+
+type TAdminProps = {
+  admin: boolean;
 };
 
 type TArticleActionsProps = {
@@ -52,6 +62,11 @@ const ArticleActionsContainer = styled.div`
       width:175px;
     }
   }
+`;
+
+const ArticleAdminActionsContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
 `;
 
 const ArticleAuthor = styled.p`
@@ -128,6 +143,38 @@ const ArticleActions: FC<TArticleActionsProps> = ({ onClickEdit, onClickDelete }
   </ArticleActionsContainer>
 );
 
+const ArticleAdminActions: FC<TAdminProps> = ({ admin }) => {
+  const [isPublic, setPublic] = useState(false);
+  const onPublicClick = () => {
+    setPublic(true);
+  };
+
+  const onRemoveClick = () => {
+    setPublic(false);
+  };
+
+  const onClick = () => {
+    console.log('click');
+  };
+
+  return (
+    <>
+      {isPublic && admin && (
+        <ArticleAdminActionsContainer>
+          <PublishedButton onClick={onClick} />
+          <RemoveFromPublicationButton onClick={onRemoveClick} />
+        </ArticleAdminActionsContainer>
+      )}
+      {!isPublic && admin && (
+        <ArticleAdminActionsContainer>
+          <PublishButton onClick={onPublicClick} />
+          <RejectButton onClick={onClick} />
+        </ArticleAdminActionsContainer>
+      )}
+    </>
+  );
+};
+
 const Article: FC<TArticleProps> = ({ slug }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -158,13 +205,18 @@ const Article: FC<TArticleProps> = ({ slug }) => {
     }
   };
 
+  const admin = true;
+
   if (!article) {
     return null;
   }
   return (
     <ArticleContainer>
-      {isAuthor && (
+      {isAuthor && !admin && (
         <ArticleActions onClickDelete={onClickDelete} onClickEdit={onClickEdit} />
+      )}
+      {admin && (
+        <ArticleAdminActions admin />
       )}
       <ArticleTitle>{article.title}</ArticleTitle>
       <ArticleAuthorContainer>

@@ -1,4 +1,4 @@
-import React, { FC, MouseEventHandler } from 'react';
+import React, { FC, MouseEventHandler, useState } from 'react';
 import DOMPurify from 'isomorphic-dompurify';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
@@ -7,6 +7,12 @@ import AuthorHeadingWidget from './author-heading-widget';
 import { TArticle } from '../types/types';
 import PreviewTags from './preview-tags';
 import { getPropOnCondition } from '../services/helpers';
+import {
+  PublishButton,
+  RejectButton,
+  PublishedButton,
+  RemoveFromPublicationButton,
+} from '../ui-lib/buttons';
 
 const ArticleCardContainer = styled.div`
     //width: 359px;
@@ -140,8 +146,36 @@ const ImageContainer = styled.div`
   }
 `;
 
+const ButonContainer = styled.div`
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  column-gap: 16px;
+
+  @media screen and (max-width: 1300px) {
+    flex-direction: column;
+    row-gap: 16px;
+    align-items:flex-start;
+  }
+`;
+
 const ArticleFullPreview: FC<TArticleFullPreview> = ({ article, onLikeClick }) => {
   const articleBody = DOMPurify.sanitize(article?.body || '');
+
+  const [isPublic, setPublic] = useState(false);
+  const admin = true;
+  const onPublicClick = () => {
+    setPublic(true);
+  };
+
+  const onRemoveClick = () => {
+    setPublic(false);
+  };
+
+  const onClick = () => {
+    console.log('click');
+  };
 
   return (
     <ArticleCardContainer>
@@ -166,6 +200,18 @@ const ArticleFullPreview: FC<TArticleFullPreview> = ({ article, onLikeClick }) =
         <Link className='link' to={`/article/${article.slug}`}>
           <FormattedMessage id='articleEnter' />
         </Link>
+        {isPublic && admin && (
+          <ButonContainer>
+            <PublishedButton onClick={onClick} />
+            <RemoveFromPublicationButton onClick={onRemoveClick} />
+          </ButonContainer>
+        )}
+        {!isPublic && admin && (
+          <ButonContainer>
+            <PublishButton onClick={onPublicClick} />
+            <RejectButton onClick={onClick} />
+          </ButonContainer>
+        )}
       </ContentContainer>
     </ArticleCardContainer>
   );

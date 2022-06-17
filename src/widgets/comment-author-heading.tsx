@@ -22,7 +22,7 @@ const CommentAuthorHeading: React.FC<TCommentAuthorHeadingProps> = ({
   onDeleteClick,
 }) => {
   const theme = useTheme();
-
+  const admin = true;
   return (
     <HeadingContainer>
       <Author
@@ -30,7 +30,7 @@ const CommentAuthorHeading: React.FC<TCommentAuthorHeadingProps> = ({
         nickname={nickname ?? username}
         imageSrc={image}
         createAt={date} />
-      {isAuthor ? (<DeleteIcon color={theme.button.red.default} onClick={onDeleteClick} />)
+      {isAuthor || admin ? (<DeleteIcon color={theme.button.red.default} onClick={onDeleteClick} />)
         : null}
     </HeadingContainer>
   );

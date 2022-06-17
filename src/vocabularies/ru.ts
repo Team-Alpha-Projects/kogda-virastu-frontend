@@ -55,6 +55,10 @@ const ru: TVocabulary = {
   generateInvite: 'Сгенерировать код',
   copyInvite: 'Скопировать ссылку-приглашение',
   inviteCopied: 'Ссылка скопирована в буфер обмена',
+  publish: 'Опубликовать',
+  reject: 'Отклонить',
+  ispublished: 'Опубликована',
+  removepublished: 'Снять с публикации',
 };
 
 export default ru;

@@ -141,6 +141,51 @@ export const EditPostButton : FC<TButtonProps> = ({ onClick, disabled = false })
     </BasicNormalButton>
   );
 };
+
+export const PublishButton: FC<TButtonProps> = ({ onClick, disabled = false }) => (
+  <BasicNormalButton
+    colorScheme='blue'
+    disabled={disabled}
+    onClick={onClick}>
+    <RegularText size='large' weight={400} sansSerif>
+      <FormattedMessage id='publish' />
+    </RegularText>
+  </BasicNormalButton>
+);
+
+export const PublishedButton: FC<TButtonProps> = ({ onClick, disabled = true }) => (
+  <BasicNormalButton
+    colorScheme='blue'
+    disabled={disabled}
+    onClick={onClick}>
+    <RegularText size='large' weight={400} sansSerif>
+      <FormattedMessage id='ispublished' />
+    </RegularText>
+  </BasicNormalButton>
+);
+
+export const RejectButton: FC<TButtonProps> = ({ onClick, disabled = false }) => (
+  <BasicNormalButton
+    colorScheme='red'
+    disabled={disabled}
+    onClick={onClick}>
+    <RegularText size='large' weight={400} sansSerif>
+      <FormattedMessage id='reject' />
+    </RegularText>
+  </BasicNormalButton>
+);
+
+export const RemoveFromPublicationButton: FC<TButtonProps> = ({ onClick, disabled = false }) => (
+  <BasicNormalButton
+    colorScheme='red'
+    disabled={disabled}
+    onClick={onClick}>
+    <RegularText size='large' weight={400} sansSerif>
+      <FormattedMessage id='removepublished' />
+    </RegularText>
+  </BasicNormalButton>
+);
+
 export const DeletePostButton : FC<TButtonProps> = ({ onClick, disabled = false }) => {
   const theme = useTheme();
   const {

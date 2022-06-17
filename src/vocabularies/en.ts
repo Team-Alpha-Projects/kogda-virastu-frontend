@@ -55,6 +55,10 @@ const en: TVocabulary = {
   generateInvite: 'Generate code',
   copyInvite: 'Copy invite link',
   inviteCopied: 'Link copied to clipboard',
+  publish: 'To publish',
+  reject: 'Reject',
+  ispublished: 'Published',
+  removepublished: 'Remove from publication',
 };
 
 export default en;
