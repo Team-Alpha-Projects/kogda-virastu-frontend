@@ -2,12 +2,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TUser } from '../types/types';
 
 type TUserState = {
-  username: string | null;
-  email: string | null;
-  bio?: string | null;
-  image?: string | null;
-  nickname?: string | null;
-  invite: string | null;
+  username: string | null,
+  email: string | null,
+  bio?: string | null,
+  image?: string | null,
+  nickname?: string | null,
+  roles: string[] | null,
 };
 
 const initialState: TUserState = {
@@ -16,7 +16,7 @@ const initialState: TUserState = {
   bio: null,
   image: null,
   nickname: null,
-  invite: null,
+  roles: null,
 };
 const userSlice = createSlice({
   name: 'user',

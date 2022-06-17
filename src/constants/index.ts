@@ -8,6 +8,7 @@ import {
   TAGS_ROUTE,
   PROFILES_ROUTE,
   JWT,
+  ADMIN_ROUTE,
 } from './api.constants';
 
 import {
@@ -29,6 +30,7 @@ export {
   FEED_ROUTE,
   TAGS_ROUTE,
   PROFILES_ROUTE,
+  ADMIN_ROUTE,
   JWT,
   mobileBreakpoint,
   tabletBreakpoint,

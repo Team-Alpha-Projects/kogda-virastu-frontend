@@ -2,9 +2,11 @@ export type TUser = {
   email: string;
   username: string;
   bio?: string;
-  image?:string;
+  image?: string;
   nickname?: string;
   invite?: string;
+  roles?: string[];
+  generatedInvite?: string;
 };
 
 // Исправлено и переименовано по модели данных сервера
@@ -16,6 +18,7 @@ export type TProfile = {
   bio?: string;
   nickname?: string;
   followingTags?: Array<string>;
+  roles?: string[];
 };
 
 export type TTags = Array<string>;

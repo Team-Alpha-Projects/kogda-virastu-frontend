@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TArticles, TTags } from '../types/types';
+import { TAPIUsers } from '../services/api.types';
 import { TThemes } from '../types/styles.types';
 import themes from '../themes';
 import { TVocabularies } from '../types/vocabularies.types';
@@ -15,6 +16,7 @@ type TAllState = {
   themesNames: Array<string>,
   vocabularies: TVocabularies,
   langNames: Array<string>,
+  users: TAPIUsers | null,
 };
 const initialState : TAllState = {
   articles: null,
@@ -26,6 +28,7 @@ const initialState : TAllState = {
   themesNames: Object.keys(themes),
   vocabularies,
   langNames: Object.keys(vocabularies),
+  users: null,
 };
 
 const allSlice = createSlice({
@@ -56,6 +59,9 @@ const allSlice = createSlice({
     setAllVocabularies: (state, action:PayloadAction<TVocabularies>) => ({
       ...state, vocabularies: action.payload,
     }),
+    setUsers: (state, action: PayloadAction<TAPIUsers>) => ({
+      ...state, users: action.payload,
+    }),
   },
 });
 
@@ -71,5 +77,6 @@ export const {
   clearAll,
   setAllThemes,
   setAllVocabularies,
+  setUsers,
 } = allSlice.actions;
 export default allReducer;

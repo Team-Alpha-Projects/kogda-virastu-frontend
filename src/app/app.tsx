@@ -24,6 +24,7 @@ import Register from '../pages/register';
 import Settings from '../pages/settings';
 import ArticlePage from '../pages/article-page';
 import Editor from '../pages/editor';
+import Admin from '../pages/admin';
 import { Modal } from '../widgets';
 import { IGenericVoidHandler } from '../types/widgets.types';
 
@@ -78,6 +79,7 @@ const App = () => {
           <Route path='/editArticle/:slug' element={<Editor />} />
           <Route path='/profile/:username' element={<Profile />} />
           <Route path='/settings' element={<Settings />} />
+          <Route path='/admin' element={<Admin />} />
           <Route path='/article/:slug' element={<ArticlePage />} />
           <Route path='*' element={<NotFound />} />
         </Routes>

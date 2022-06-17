@@ -16,6 +16,7 @@ import {
   LogoutIcon,
   HomeIcon,
   LoginIcon,
+  CheckIcon,
 } from './icons';
 import { getPropOnCondition, setColor } from '../services/helpers';
 import useMouseEvents from '../services/hooks/use-mouse-events';
@@ -382,6 +383,23 @@ export const MenuNewPostButton : FC<TButtonProps> = ({ onClick, disabled = false
         distance={iconDistance} />
       <RegularText size='large' weight={500}>
         <FormattedMessage id='newArticle' />
+      </RegularText>
+    </MenuButton>
+  );
+};
+
+export const MenuAdminButton : FC<TButtonProps> = ({ onClick, disabled = false }) => {
+  const theme = useTheme();
+  return (
+    <MenuButton
+      colorScheme='menu'
+      disabled={disabled}
+      onClick={onClick}>
+      <CheckIcon
+        color={theme.button.menu.font}
+        distance={iconDistance} />
+      <RegularText size='large' weight={500}>
+        <FormattedMessage id='adminPanel' />
       </RegularText>
     </MenuButton>
   );

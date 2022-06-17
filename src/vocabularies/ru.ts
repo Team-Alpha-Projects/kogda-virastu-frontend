@@ -1,6 +1,7 @@
 import { TVocabulary } from '../types/vocabularies.types';
 
 const ru: TVocabulary = {
+  adminPanel: 'Админка',
   headerLink: 'Главная',
   userLogin: 'Войти',
   newArticle: 'Новая запись',
@@ -20,7 +21,7 @@ const ru: TVocabulary = {
   sendComment: 'Отправить комментарий',
   articleName: 'Название статьи',
   articleAbout: 'О чем статья',
-  articleImage: 'URL изображения (опционально)',
+  articleImage: 'Изображение (опционально)',
   articleText: 'Текст статьи',
   tags: 'Теги (через запятую)',
   saveArticle: 'Сохранить запись',
@@ -33,7 +34,7 @@ const ru: TVocabulary = {
   password: 'Пароль',
   confirmPassword: 'Подтвердите пароль',
   passwordsAreNotEqual: 'Пароли не совпадают',
-  urlImage: 'URL изображения профиля',
+  urlImage: 'Изображение профиля',
   newPassword: 'Новый пароль',
   refreshUser: 'Обновить настройки',
   usersettings: 'Ваши настройки',

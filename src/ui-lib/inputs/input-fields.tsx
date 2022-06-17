@@ -19,7 +19,7 @@ export const FieldUrl: FC<TFieldInput> = ({
     <InputField
       placeholder={placeholder}
       name='FieldURL'
-      type='url'
+      type='file'
       errorText={errorText}
       error={error}
       onFocus={onFocus}
@@ -46,7 +46,7 @@ export const FieldProfileImage: FC<TFieldInput> = ({
     <InputField
       placeholder={placeholder}
       name='FieldProfileImage'
-      type='url'
+      type='file'
       errorText={errorText}
       error={error}
       onBlur={onBlur}
@@ -55,7 +55,8 @@ export const FieldProfileImage: FC<TFieldInput> = ({
       onChange={onChange}
       labelText={intl.messages.urlImage as string}
       icon={<PaperClipIcon color='grey' />}
-      disabled={disabled} />
+      disabled={disabled}
+      accept='image/*' />
   );
 };
 export const FieldLogin: FC<TFieldInput> = ({

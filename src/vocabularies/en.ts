@@ -1,6 +1,7 @@
 import { TVocabulary } from '../types/vocabularies.types';
 
 const en: TVocabulary = {
+  adminPanel: 'Admin panel',
   headerLink: 'Main Page',
   userLogin: 'Login',
   newArticle: 'New post',
@@ -20,7 +21,7 @@ const en: TVocabulary = {
   sendComment: 'Send comment',
   articleName: 'Article title',
   articleAbout: 'About',
-  articleImage: 'URL of images (optional)',
+  articleImage: 'Article image (optional)',
   articleText: 'Article Text',
   tags: 'Tags (comma-separated)',
   saveArticle: 'Create article',
@@ -32,7 +33,7 @@ const en: TVocabulary = {
   userEmail: 'Email',
   password: 'Password',
   confirmPassword: 'Confirm password',
-  urlImage: 'User avatar URL',
+  urlImage: 'User avatar',
   newPassword: 'New password',
   refreshUser: 'Update settings',
   usersettings: 'Your setings',

@@ -4,7 +4,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useIntl } from 'react-intl';
 import { useSelector, useDispatch } from '../../services/hooks';
-import { setBody } from '../../store';
+import { setBody, clearViewArticle } from '../../store';
 import { LabelStyle } from '../../ui-lib/inputs/text-fields-styles';
 import { ContainerTextArea } from '../../ui-lib/inputs/textarea-field-config';
 
@@ -18,7 +18,10 @@ const Editor: FC = () => {
   const dispatch = useDispatch();
   const { body } = useSelector((state) => state.forms.article) ?? {};
   const initialArticle = useSelector((state) => state.view.article);
-  const handleChange = (value: string) => dispatch(setBody(value));
+  const handleChange = (value: string) => {
+    dispatch(setBody(value));
+    dispatch(clearViewArticle());
+  };
   const intl = useIntl();
 
   const modules = {

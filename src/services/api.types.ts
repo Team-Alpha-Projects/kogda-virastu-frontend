@@ -1,5 +1,5 @@
 import {
-  TArticle, TComment, TProfile, TTags, TUser, TPopularTags
+  TArticle, TComment, TProfile, TTags, TUser, TPopularTags,
 } from '../types/types';
 
 export type TAPINewUser = {
@@ -21,6 +21,7 @@ export type TAPIAuth = {
     token: string;
     nickname: string;
     invite: string;
+    roles: string[];
   };
 };
 
@@ -32,14 +33,29 @@ export type TAPILoginUser = {
 };
 
 export type TAPIUser = {
-  user: TUser;
+  name: number | undefined;
+  roles: string[],
+  _id?: string[],
+  bio?: string[],
+  favorites?: string[],
+  followingUsers?: string[],
+  followingTags?: string[],
+  email: string,
+  salt? : string,
+  hash?: string,
+  nickname: string,
+  createdAt?: string,
+  updatedAt?: string,
+  __v?: number,
+  image?: string,
+  username: string,
 };
 
 export type TAPIPatchUserData = {
   email?: string;
   username?: string;
   bio?: string;
-  image?: string;
+  image?: string | FormData;
   password?: string;
   nickname?: string;
 };
@@ -97,6 +113,12 @@ export type TAPIProfile = {
   profile: TProfile;
 };
 
+export type TAPIResponse = {
+  data: {
+    url: string;
+  }
+};
+
 export type TAPIErrors = {
   [error: string]: string;
 };
@@ -104,3 +126,15 @@ export type TAPIError = {
   errors: TAPIErrors;
   statusCode: number;
 };
+
+export type TAPIUsers = Array<TAPIUser> | null;
+
+export type TAPIUsersRequest = {
+  users: Array<TAPIUser>;
+  usersCount: number;
+}
+
+export type TAPIUserData = {
+  users: Array<TAPIUser>;
+  usersCount?: number;
+}

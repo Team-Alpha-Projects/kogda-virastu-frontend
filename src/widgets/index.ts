@@ -18,6 +18,8 @@ import SettingsForm from './forms/settings-form';
 import ScrollRibbon from './scroll-ribbon';
 import FeedRibbon from './feed-ribbon';
 import Slider from './slider';
+import UserList from './user-list';
+import UserRow from './user-row';
 
 export {
   Author,
@@ -40,4 +42,6 @@ export {
   FeedRibbon,
   CommentList,
   Slider,
+  UserList,
+  UserRow,
 };

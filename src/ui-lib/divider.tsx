@@ -3,10 +3,6 @@ import styled from 'styled-components';
 import { dividerGray } from '../constants/colors';
 
 import { TDividerProps } from '../types/styles.types';
-// type TDividerProps = {
-//   distance: number;
-//   width?: number;
-// };
 
 const Divider = styled.hr<TDividerProps>`
   width: ${({ width }) => (width || 100)}%;

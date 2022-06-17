@@ -35,13 +35,14 @@ const ContainerIcon = styled.div`
 interface IInputInterface {
   type: TInputFieldType;
   placeholder: string;
-  value: string;
+  value?: string; // File? (err ts form-types)
   name: string;
   error: boolean;
   icon?: React.ReactNode;
   errorText: string;
   disabled: boolean;
   labelText: string;
+  accept?: string;
   onChange: ChangeEventHandler<HTMLInputElement>;
   onIconClick?: MouseEventHandler;
   onBlur?: FocusEventHandler<HTMLInputElement>;
@@ -50,7 +51,7 @@ interface IInputInterface {
 
 const InputField :FC<IInputInterface> = ({
   type, placeholder, value, name, error = false, icon = null, errorText = '', onChange, onIconClick, onBlur, onFocus,
-  disabled = false, labelText = '',
+  disabled = false, labelText = '', accept = '',
 }: IInputInterface) => (
   <ContainerInput>
     <LabelStyle>
@@ -62,6 +63,7 @@ const InputField :FC<IInputInterface> = ({
         placeholder={placeholder}
         value={value}
         name={name}
+        accept={accept}
         onChange={onChange}
         onFocus={onFocus}
         onBlur={onBlur} />
@@ -74,6 +76,8 @@ const InputField :FC<IInputInterface> = ({
 );
 
 InputField.defaultProps = {
+  value: undefined,
+  accept: undefined,
   icon: undefined,
   onIconClick: undefined,
   onBlur: undefined,
