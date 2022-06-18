@@ -125,6 +125,8 @@ export type TAPIErrors = {
 export type TAPIError = {
   errors: TAPIErrors;
   statusCode: number;
+  url: string | undefined;
+  message: string | undefined;
 };
 
 export type TAPIUsers = Array<TAPIUser> | null;

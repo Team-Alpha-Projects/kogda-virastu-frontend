@@ -1,6 +1,7 @@
 import React, { FC, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { nanoid } from '@reduxjs/toolkit';
+import { useIntl } from 'react-intl';
 import { useDispatch } from '../services/hooks';
 import { AvatarIcon, Divider } from '../ui-lib';
 import { TAPIUser } from '../services/api.types';
@@ -75,6 +76,7 @@ const Input = styled.input`
 
 const UserRow: FC<IUserRow> = ({ user }) => {
   const dispatch = useDispatch();
+  const intl = useIntl();
   const [checked, setChecked] = useState<boolean>(false);
   const id: string = nanoid();
 
@@ -97,10 +99,10 @@ const UserRow: FC<IUserRow> = ({ user }) => {
           <AvatarIcon name={user.nickname} image={user.image} size='medium' distance={8} />
           <UserName>{user.nickname}</UserName>
         </AvatarUsernameCont>
-        <RoleText>{user.roles.includes('admin') ? 'Админ' : 'Пользователь'}</RoleText>
+        <RoleText>{user.roles.includes('admin') ? (intl.messages.admin as string) : (intl.messages.user as string)}</RoleText>
         <CheckWithLabelContainer htmlFor={id}>
           <Input id={id} checked={checked} type='checkbox' onChange={() => toggle()} />
-          <UserName>Сделать админом</UserName>
+          <UserName>{intl.messages.makeAdmin as string}</UserName>
         </CheckWithLabelContainer>
       </Row>
       <Divider distance={8} />

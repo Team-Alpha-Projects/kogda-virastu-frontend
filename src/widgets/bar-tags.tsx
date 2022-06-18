@@ -92,6 +92,7 @@ const BarTags: FC<TBarTags & TLists> = ({
           <List key={nanoid(10)}>
             <Tag
               tag={tag}
+              pointer
               isFollowing={followingTags?.includes(tag)}
               handleClick={handleClick} />
           </List>

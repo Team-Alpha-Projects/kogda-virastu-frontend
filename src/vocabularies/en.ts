@@ -56,10 +56,18 @@ const en: TVocabulary = {
   generateInvite: 'Generate code',
   copyInvite: 'Copy invite link',
   inviteCopied: 'Link copied to clipboard',
-  publish: 'To publish',
+  publish: 'Publish',
   reject: 'Reject',
   ispublished: 'Published',
   removepublished: 'Remove from publication',
+  errorUnathorized: 'You are not authorized: Sign in to complete this action',
+  errorLogin: 'Incorrect login or password',
+  errorNotAdmin: 'You have no rights to access this page',
+  confirmError: 'Ok',
+  makeAdmin: 'Make admin',
+  userList: 'User list',
+  admin: 'Admin',
+  user: 'User',
 };
 
 export default en;

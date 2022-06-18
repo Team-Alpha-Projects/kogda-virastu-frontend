@@ -1,4 +1,3 @@
-import { batch } from 'react-redux';
 import { AxiosError } from 'axios';
 import { AppThunk } from '../store/store.types';
 import { fetchComments } from '../services/api';
@@ -12,10 +11,8 @@ const getComments: AppThunk = (slug: string) => async (dispatch) => {
   dispatch(commentsFetchRequested());
   try {
     const { data: { comments } } = await fetchComments(slug);
-    batch(() => {
-      dispatch(setViewCommentsFeed(comments));
-      dispatch(commentsFetchSucceeded());
-    });
+    dispatch(setViewCommentsFeed(comments));
+    dispatch(commentsFetchSucceeded());
   } catch (error) {
     dispatch(commentsFetchFailed(makeErrorObject(error as AxiosError<TAPIError>)));
   }

@@ -1,4 +1,3 @@
-import { batch } from 'react-redux';
 import { AxiosError } from 'axios';
 import { fetchTags } from '../services/api';
 import {
@@ -16,10 +15,8 @@ const getAllTagsThunk : AppThunk = () => async (dispatch) => {
     dispatch(tagsFetchRequested());
     const { data: { tags } } = await fetchTags();
     dispatch(setAllTags(tags));
-    batch(() => {
-      dispatch(setAllTags(tags));
-      dispatch(tagsFetchSucceeded());
-    });
+    dispatch(setAllTags(tags));
+    dispatch(tagsFetchSucceeded());
   } catch (error) {
     dispatch(tagsFetchFailed(makeErrorObject(error as AxiosError<TAPIError>)));
   }

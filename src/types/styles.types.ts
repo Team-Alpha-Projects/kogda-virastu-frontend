@@ -108,6 +108,7 @@ export type THeaderTextProps = {
   marginCSS?: string;
   paddingCSS?: string;
   lines?: number;
+  onClick?: Function;
 };
 
 export type TTextProps = {

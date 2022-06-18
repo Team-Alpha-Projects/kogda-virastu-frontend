@@ -1,5 +1,4 @@
 import { AxiosError } from 'axios';
-import { batch } from 'react-redux';
 import { AppThunk } from '../store/store.types';
 import { postComment } from '../services/api';
 import {
@@ -18,11 +17,9 @@ const createCommentThunk: AppThunk = (slug: string) => async (dispatch, getState
     if (newComment) {
       dispatch(commentPostRequested());
       const { data: { comment } } = await postComment(slug, newComment);
-      batch(() => {
-        dispatch(setViewCommentsFeed([comment]));
-        dispatch(resetComment());
-        dispatch(commentPostSucceeded());
-      });
+      dispatch(setViewCommentsFeed([comment]));
+      dispatch(resetComment());
+      dispatch(commentPostSucceeded());
     }
   } catch (error) {
     dispatch(commentPostFailed(makeErrorObject(error as AxiosError<TAPIError>)));

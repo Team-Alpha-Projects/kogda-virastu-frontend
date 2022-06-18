@@ -31,6 +31,7 @@ type TBasicButtonProps = {
 
 export const BasicNormalButton = styled.button<TBasicButtonProps>`
  // width: 100%;
+  cursor: pointer;
   max-height: 40px;
   padding: 8px 16px;
   border-radius: 4px;
@@ -474,6 +475,13 @@ export const CopyInviteButton : FC<TButtonProps> = ({ onClick, disabled = false 
       font-family='Alegreya'
       color='#62626A'>
       <FormattedMessage id='copyInvite' />
+    </RegularText>
+  </MarginedNormalButton>
+);
+export const ConfirmErrorButton : FC<TButtonProps> = ({ onClick, disabled = false }) => (
+  <MarginedNormalButton colorScheme='blue' disabled={disabled} type='button' onClick={onClick}>
+    <RegularText size='large' weight={500}>
+      <FormattedMessage id='confirmError' />
     </RegularText>
   </MarginedNormalButton>
 );

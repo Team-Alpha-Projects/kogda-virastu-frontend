@@ -7,9 +7,11 @@ import ProfileWidget from './profile-widget';
 import AuthorHeadingMiniWidget from './author-heading-widget';
 import HeaderMenuWidget from './header-menu-widget';
 import TopAnnounceWidget from './top-announce-widget';
+import NewAnnounceWidget from './new-announce-widget';
 import Comment from './comment';
 import CommentInput from './comment-input';
 import Modal from './modal';
+import ErrorModal from './error-modal';
 import CommentList from './comment-list';
 import Article from './article';
 import LoginForm from './forms/login-form';
@@ -31,9 +33,11 @@ export {
   AuthorHeadingMiniWidget,
   HeaderMenuWidget,
   TopAnnounceWidget,
+  NewAnnounceWidget,
   Comment,
   CommentInput,
   Modal,
+  ErrorModal,
   Article,
   LoginForm,
   RegisterForm,

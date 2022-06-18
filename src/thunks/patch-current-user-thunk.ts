@@ -24,7 +24,6 @@ const patchCurrentUserThunk: AppThunk = () => async (dispatch, getState) => {
     image: profile.image || '',
     nickname: profile.nickname || '',
   };
-  console.log(userData);
 
   if (profile.password) {
     userData.password = profile.password;

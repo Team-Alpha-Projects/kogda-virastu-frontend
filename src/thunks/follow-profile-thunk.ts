@@ -1,5 +1,4 @@
 import { AxiosError, AxiosResponse } from 'axios';
-import { batch } from 'react-redux';
 import {
   followProfilePostRequested,
   followProfilePostSucceeded,
@@ -18,10 +17,8 @@ const followProfileThunk: AppThunk = () => async (dispatch, getState) => {
   dispatch(followProfilePostRequested());
   try {
     const { data } = await postFollowProfile(username) as AxiosResponse<TAPIProfile>;
-    batch(() => {
-      dispatch(setViewProfile(data.profile));
-      dispatch(followProfilePostSucceeded());
-    });
+    dispatch(setViewProfile(data.profile));
+    dispatch(followProfilePostSucceeded());
   } catch (error) {
     dispatch(followProfilePostFailed(makeErrorObject(error as AxiosError<TAPIError>)));
   }

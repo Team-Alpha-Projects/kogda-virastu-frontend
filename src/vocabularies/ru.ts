@@ -60,6 +60,14 @@ const ru: TVocabulary = {
   reject: 'Отклонить',
   ispublished: 'Опубликована',
   removepublished: 'Снять с публикации',
+  errorUnathorized: 'Вы не авторизированы: залогиньтесь, чтобы выполнить это действие',
+  errorLogin: 'Неверно введена пара логин/пароль',
+  errorNotAdmin: 'У вас нет прав доступа к этой странице',
+  confirmError: 'Ок',
+  makeAdmin: 'Сделать админом',
+  userList: 'Список пользователей',
+  admin: 'Админ',
+  user: 'Пользователь',
 };
 
 export default ru;

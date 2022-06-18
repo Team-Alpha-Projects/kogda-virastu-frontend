@@ -7,15 +7,15 @@ import {
   topArticlesFailed,
   setTopFeed,
 } from '../store';
-import { makeErrorObject } from '../services/helpers';
 import { TAPIError } from '../services/api.types';
+import { makeTopFeed, makeErrorObject } from '../services/helpers';
 
-const setTopLikedThunk: AppThunk = () => async (dispatch) => {
+const setTopLikedThunk: AppThunk = (qty = 7) => async (dispatch) => {
   try {
     dispatch(topArticlesRequested());
     const
       { data: { articles } } = await fetchTopArticles();
-    dispatch(setTopFeed(articles));
+    dispatch(setTopFeed(makeTopFeed(articles, qty as number)));
     dispatch(topArticlesSucceeded());
   } catch (error) {
     dispatch(topArticlesFailed(makeErrorObject(error as AxiosError<TAPIError>)));

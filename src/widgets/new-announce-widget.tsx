@@ -1,11 +1,10 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import styled from 'styled-components';
-import { useSelector, useDispatch } from '../services/hooks';
+import { useSelector } from '../services/hooks';
 import { TArticle } from '../types/types';
 import BriefPostAnnounceWidget from './brief-post-announce-widget';
 import { Divider, HeaderThreeText } from '../ui-lib';
 import { TTopAnnounceWidgetProps } from '../types/widgets.types';
-import { fetchTopArticles } from '../services/api';
 
 const TopAnnounce = styled.div`
   display: flex;
@@ -54,8 +53,8 @@ const ItemWrapper = styled.li`
   }
 `;
 
-const TopAnnounceWidget: FC<TTopAnnounceWidgetProps> = ({ caption }) => {
-  const topArticles = useSelector((state) => state.view.topFeed);
+const NewAnnounceWidget: FC<TTopAnnounceWidgetProps> = ({ caption }) => {
+  const topArticles = useSelector((state) => state.view.newFeed);
   if (topArticles) {
     return (
       <TopAnnounce>
@@ -96,4 +95,4 @@ const TopAnnounceWidget: FC<TTopAnnounceWidgetProps> = ({ caption }) => {
   return <div>Loading Articles...</div>;
 };
 
-export default TopAnnounceWidget;
+export default NewAnnounceWidget;

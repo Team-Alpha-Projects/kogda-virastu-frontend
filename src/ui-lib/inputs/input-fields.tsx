@@ -5,7 +5,7 @@ import { PaperClipIcon, EyeIcon, EyeNoIcon } from '../icons';
 import { TFieldInput } from '../../types/styles.types';
 
 export const FieldUrl: FC<TFieldInput> = ({
-  value = '',
+  value,
   onFocus = undefined,
   onBlur = undefined,
   onChange,

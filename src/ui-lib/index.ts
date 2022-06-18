@@ -22,6 +22,7 @@ import {
 
 import {
   EditPostButton,
+  ConfirmErrorButton,
   DeletePostButton,
   OpenMenuButton,
   FollowButton,
@@ -70,6 +71,8 @@ import {
 
 import Divider from './divider';
 
+import Preloader from './preloader';
+
 const GlobalStyles = createGlobalStyle`
   ${normalize}
 `;
@@ -94,6 +97,7 @@ export {
   EyeIcon,
   EyeNoIcon,
   EditPostButton,
+  ConfirmErrorButton,
   DeletePostButton,
   OpenMenuButton,
   FollowButton,
@@ -131,4 +135,5 @@ export {
   MenuLogoutButton,
   FieldTextComment,
   MenuAdminButton,
+  Preloader,
 };

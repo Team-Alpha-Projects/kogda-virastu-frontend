@@ -1,6 +1,7 @@
 import React, { FC, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { useIntl } from 'react-intl';
 import { useSelector, useDispatch } from '../services/hooks';
 import { jwt } from '../services/api';
 import { getUsersThunk } from '../thunks';
@@ -18,6 +19,7 @@ const Page = styled.section`
 const Admin: FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const intl = useIntl();
   const isLogged = useSelector(
     (state) => state.system.isLoggedIn
       && !!state.profile.username,
@@ -37,7 +39,7 @@ const Admin: FC = () => {
 
   return (
     <Page>
-      <UserList users={users} title='Список пользователей' />
+      <UserList users={users} title={intl.messages.userList as string} />
     </Page>
   );
 };

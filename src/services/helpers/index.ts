@@ -8,6 +8,7 @@ import testImageUrl from './test-image-url';
 import getLinesClamp from './get-lines-clamp';
 import getOptionalProp from './get-optional-prop';
 import makeTopFeed from './make-top-feed';
+import makeNewFeed from './make-new-feed';
 import compareCreatedDatesForTop from './compare-created-dates-for-top';
 import compareLikesForTop from './compare-likes-for-top';
 
@@ -22,6 +23,7 @@ export {
   getLinesClamp,
   getOptionalProp,
   makeTopFeed,
+  makeNewFeed,
   compareCreatedDatesForTop,
   compareLikesForTop,
 };

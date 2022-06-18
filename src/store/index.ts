@@ -81,6 +81,7 @@ import {
   setArtistProfile,
   clearPage,
   setTopFeed,
+  setNewFeed,
   clearTopFeed,
 } from './viewSlice';
 
@@ -400,4 +401,5 @@ export {
   declineArticlePostRequested,
   declineArticlePostSucceeded,
   declineArticlePostFailed,
+  setNewFeed,
 };

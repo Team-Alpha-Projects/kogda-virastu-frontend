@@ -1,5 +1,4 @@
 import { AxiosError } from 'axios';
-import { batch } from 'react-redux';
 import { AppThunk } from '../store/store.types';
 import { registerUser, jwt } from '../services/api';
 import {
@@ -28,17 +27,15 @@ const registerThunk: AppThunk = () => async (dispatch, getState) => {
       },
     } = await registerUser(usernameReg, emailReg, passwordReg, nicknameReg, inviteReg);
     jwt.set(token);
-    batch(() => {
-      dispatch(setUser({
-        username,
-        email,
-        bio,
-        image,
-        nickname,
-        invite,
-      }));
-      dispatch(userRegistrationSucceeded());
-    });
+    dispatch(setUser({
+      username,
+      email,
+      bio,
+      image,
+      nickname,
+      invite,
+    }));
+    dispatch(userRegistrationSucceeded());
     jwt.set(token);
   } catch (error) {
     dispatch(

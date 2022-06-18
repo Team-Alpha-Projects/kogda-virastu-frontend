@@ -1,7 +1,6 @@
 import React, { FC, MouseEventHandler } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import { batch } from 'react-redux';
 import { jwt } from '../services/api';
 
 import {
@@ -44,12 +43,10 @@ const HeaderMenuWidget : FC = () => {
     navigate('/editArticle');
   };
   const onLogoutClick : MouseEventHandler<HTMLButtonElement> = () => {
-    batch(() => {
-      dispatch(onLogout());
-      dispatch(clearUser());
-      dispatch(clearViewArticle());
-      dispatch(clearSelectedTags());
-    });
+    dispatch(onLogout());
+    dispatch(clearUser());
+    dispatch(clearViewArticle());
+    dispatch(clearSelectedTags());
     jwt.remove();
     navigate('/');
   };

@@ -2,22 +2,22 @@ import React, { FC, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { batch } from 'react-redux';
 import { useDispatch, useSelector } from '../services/hooks';
 import {
   Article,
   CommentInput,
   CommentList,
-  TopAnnounceWidget,
+  NewAnnounceWidget,
 } from '../widgets';
 import {
-  getArticleThunk, getCommentsThunk, setNewPostsThunk,
+  getArticleThunk, getCommentsThunk, setNewPostsThunk, setTopLikedThunk,
 } from '../thunks';
 import {
   clearArticleFetchNotFound, clearErrorMessage, clearErrorObject, resetArticle,
 } from '../store';
 import Slider from '../widgets/slider';
 import { desktopBreakpoint, mobileViewThreshold, tabletBreakpoint } from '../constants';
+import { Preloader } from '../ui-lib';
 
 const desktopToTabletGapStep = (80 - 40) / (desktopBreakpoint - tabletBreakpoint);
 const tabletToMobileGapStep = (40 - 20) / (tabletBreakpoint - mobileViewThreshold);
@@ -103,30 +103,27 @@ const ArticlePage: FC = () => {
   const { isLoggedIn } = useSelector((state) => state.system);
   const intl = useIntl();
   const { slug } = useParams();
-  const { isArticleNotFound, isArticleRemoved } = useSelector((state) => state.api);
+  const { isArticleNotFound, isArticleRemoved, loading } = useSelector((state) => state.api);
   const { articles } = useSelector((state) => state.all);
 
   useEffect(() => {
-    batch(() => {
-      dispatch(resetArticle());
-      dispatch(getCommentsThunk(slug));
-      dispatch(getArticleThunk(slug));
-    });
+    dispatch(resetArticle());
+    dispatch(getCommentsThunk(slug));
+    dispatch(getArticleThunk(slug));
   }, [dispatch, slug]);
 
   useEffect(() => {
     if (articles && articles?.length > 0) {
       dispatch(setNewPostsThunk());
+      dispatch(setTopLikedThunk());
     }
   }, [dispatch, articles]);
 
   useEffect(() => {
     if (isArticleNotFound) {
-      batch(() => {
-        dispatch(clearArticleFetchNotFound());
-        dispatch(clearErrorObject());
-        dispatch(clearErrorMessage());
-      });
+      dispatch(clearArticleFetchNotFound());
+      dispatch(clearErrorObject());
+      dispatch(clearErrorMessage());
       navigate('/no-article');
     }
   }, [dispatch, navigate, isArticleNotFound]);
@@ -136,6 +133,8 @@ const ArticlePage: FC = () => {
       navigate('/');
     }
   }, [navigate, isArticleRemoved]);
+
+  if (loading) return <Preloader />;
 
   return (
     <ArticleSection>
@@ -154,9 +153,8 @@ const ArticlePage: FC = () => {
         {!!slug && <CommentList slug={slug} />}
       </ArticlePageWrapper>
       <RightColumn>
-
         <Slider />
-        <TopAnnounceWidget caption={intl.messages.freshContent as string} />
+        <NewAnnounceWidget caption={intl.messages.freshContent as string} />
       </RightColumn>
     </ArticleSection>
   );

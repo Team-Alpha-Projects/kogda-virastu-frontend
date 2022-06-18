@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import { IntlProvider } from 'react-intl';
-import { batch } from 'react-redux';
 import { useDispatch, useSelector } from '../services/hooks';
 import { jwt } from '../services/api';
 import {
@@ -13,7 +12,7 @@ import {
   getPopularTags,
 } from '../thunks';
 import basicThemes, { defaultTheme } from '../themes/index';
-import { closeConfirm, setLanguage } from '../store';
+import { closeConfirm, setLanguage, clearErrorObject } from '../store';
 import Header from '../widgets/Header';
 import Footer from '../widgets/Footer';
 import Profile from '../pages/profile';
@@ -25,7 +24,7 @@ import Settings from '../pages/settings';
 import ArticlePage from '../pages/article-page';
 import Editor from '../pages/editor';
 import Admin from '../pages/admin';
-import { Modal } from '../widgets';
+import { Modal, ErrorModal } from '../widgets';
 import { IGenericVoidHandler } from '../types/widgets.types';
 
 const App = () => {
@@ -35,24 +34,21 @@ const App = () => {
   const { isDeleteConfirmOpen } = useSelector((state) => state.system);
   const { username, nickname } = useSelector((state) => state.profile);
   const slug = useSelector((state) => state.view.article?.slug) ?? '';
+  const { errorObject } = useSelector((state) => state.api);
   const onConfirmDelete: IGenericVoidHandler = () => {
-    batch(() => {
-      dispatch(deleteArticleThunk(slug));
-      dispatch(closeConfirm());
-    });
+    dispatch(deleteArticleThunk(slug));
+    dispatch(closeConfirm());
   };
   const onConfirmClose: IGenericVoidHandler = () => dispatch(closeConfirm());
+  const onConfirmErrorClose: IGenericVoidHandler = () => dispatch(clearErrorObject());
 
   useEffect(() => {
-    batch(() => {
-      dispatch(getAllPostsThunk());
-      dispatch(getPopularTags());
-    });
+    dispatch(getAllPostsThunk());
+    dispatch(getPopularTags());
+
     if (jwt.test()) {
-      batch(() => {
-        dispatch(getUserThunk());
-        dispatch(getPublicFeedThunk());
-      });
+      dispatch(getUserThunk());
+      dispatch(getPublicFeedThunk());
     }
   }, [dispatch, username, nickname]);
 
@@ -86,6 +82,9 @@ const App = () => {
         <Footer />
         {isDeleteConfirmOpen && (
           <Modal onClose={onConfirmClose} onSubmit={onConfirmDelete} />
+        )}
+        {errorObject && (
+          <ErrorModal onClose={onConfirmErrorClose} onSubmit={onConfirmErrorClose} />
         )}
       </ThemeProvider>
     </IntlProvider>

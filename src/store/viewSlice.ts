@@ -19,6 +19,7 @@ type TViewState = {
   feedType: FeedTypes;
   articlesType: UserArticlesTypes;
   topFeed: TArticles | null;
+  newFeed: TArticles | null;
 };
 
 const initialState: TViewState = {
@@ -36,6 +37,7 @@ const initialState: TViewState = {
   feedType: FeedTypes.public,
   articlesType: UserArticlesTypes.my,
   topFeed: null,
+  newFeed: null,
 };
 
 const viewSlice = createSlice({
@@ -53,6 +55,9 @@ const viewSlice = createSlice({
     }),
     clearTopFeed: (state) => ({
       ...state, topFeed: null,
+    }),
+    setNewFeed: (state, action: PayloadAction<TArticles>) => ({
+      ...state, newFeed: action.payload,
     }),
     setFeedCount: (state, action: PayloadAction<number>) => ({
       ...state, feedCount: action.payload,
@@ -145,6 +150,7 @@ export const {
   setFeedType,
   setArtistProfile,
   setTopFeed,
+  setNewFeed,
   clearTopFeed,
 } = viewSlice.actions;
 const viewReducer = viewSlice.reducer;
