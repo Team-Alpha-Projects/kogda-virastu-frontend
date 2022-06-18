@@ -1,7 +1,6 @@
 import React, { FC, MouseEventHandler, useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
-import { batch } from 'react-redux';
 import { useDispatch, useSelector } from '../services/hooks';
 import { RegularText, Divider } from '../ui-lib';
 import ScrollRibbon from './scroll-ribbon';
@@ -66,14 +65,12 @@ const ItemWrapper = styled.li`
 
 const AdminFeedRibbon: FC = () => {
   const dispatch = useDispatch();
-  const posts = useSelector((state) => state.view.feed);
+  const posts = useSelector((state) => state.view.pendingFeed);
   const tags = useSelector((state) => state.view.selectedTags) ?? [];
   const { isPublicFeedFetching } = useSelector((state) => state.api);
 
   useEffect(() => {
-    batch(() => {
-      dispatch(getPendingFeedThunk());
-    });
+    dispatch(getPendingFeedThunk());
   }, [dispatch]);
 
   if (!posts || isPublicFeedFetching) {

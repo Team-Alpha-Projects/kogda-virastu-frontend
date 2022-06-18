@@ -6,7 +6,7 @@ import {
   pendingFeedFailed,
   pendingFeedRequested,
   setFeedCount,
-  setViewFeed,
+  setPendingFeed,
 } from '../store';
 import { AppThunk } from '../store/store.types';
 import { makeErrorObject } from '../services/helpers';
@@ -22,7 +22,7 @@ const getPendingFeedThunk: AppThunk = (
     const
       { data: { articles, articlesCount } } = await fetchPendingArticles(params);
     batch(() => {
-      dispatch(setViewFeed(articles));
+      dispatch(setPendingFeed(articles));
       dispatch(setFeedCount(articlesCount));
       dispatch(pendingFeedSucceeded());
     });

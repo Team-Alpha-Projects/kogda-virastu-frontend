@@ -1,4 +1,4 @@
-import React, { FC, MouseEventHandler } from 'react';
+import React, { FC, MouseEventHandler, useEffect } from 'react';
 import { FormattedDate } from 'react-intl';
 import DOMPurify from 'isomorphic-dompurify';
 import { useNavigate } from 'react-router-dom';
@@ -7,6 +7,8 @@ import { useDispatch, useSelector } from '../services/hooks';
 import {
   addLikeThunk, deleteLikeThunk,
   publishArticleThunk,
+  getPendingFeedThunk,
+  getPublicFeedThunk,
   holdArticleThunk,
   declineArticleThunk,
 } from '../thunks';
@@ -146,17 +148,27 @@ const ArticleAdminActions: FC = () => {
   const dispatch = useDispatch();
   const { article } = useSelector((state) => state.view);
 
-  const onPublicClick = () => {
+  const onPublishClick = () => {
     dispatch(publishArticleThunk(article?.slug));
+    setTimeout(() => {
+      dispatch(getPublicFeedThunk());
+    }, 300);
   };
 
   const onRemoveClick = () => {
     dispatch(holdArticleThunk(article?.slug));
+    setTimeout(() => {
+      dispatch(getPendingFeedThunk());
+    }, 300);
   };
 
   const onRejectClick = () => {
     dispatch(declineArticleThunk(article?.slug));
   };
+
+  useEffect(() => {
+    dispatch(getPendingFeedThunk());
+  }, [dispatch]);
 
   return (
     <>
@@ -168,7 +180,7 @@ const ArticleAdminActions: FC = () => {
       )}
       {article?.state === 'pending' && (
         <ArticleAdminActionsContainer>
-          <PublishButton onClick={onPublicClick} />
+          <PublishButton onClick={onPublishClick} />
           <RejectButton onClick={onRejectClick} />
         </ArticleAdminActionsContainer>
       )}
@@ -185,20 +197,16 @@ const Article: FC<TArticleProps> = ({ slug }) => {
   const currentUser = useSelector((state) => state.profile);
   const isAuthor = article?.author.username === currentUser.username;
   const articleBody = DOMPurify.sanitize(article?.body || '');
-
-  console.log(article?.state);
   const onClickDelete = () => {
     if (article) {
       dispatch(openConfirm());
     }
   };
-
   const onClickEdit = () => {
     if (article && slug) {
       navigate(`/editArticle/${slug}`);
     }
   };
-
   const onClickLike = (ev: React.MouseEvent) => {
     ev.preventDefault();
     if (article?.favorited) {
@@ -213,7 +221,7 @@ const Article: FC<TArticleProps> = ({ slug }) => {
   }
   return (
     <ArticleContainer>
-      {isAuthor && roles && !roles.includes('admin') && (
+      {isAuthor && (
         <ArticleActions onClickDelete={onClickDelete} onClickEdit={onClickEdit} />
       )}
       {roles && roles.includes('admin') && (

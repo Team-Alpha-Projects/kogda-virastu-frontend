@@ -31,7 +31,6 @@ const ModerationButtons: FC = () => {
   };
 
   const onClick = () => {
-    console.log('click');
   };
   return (
     <>

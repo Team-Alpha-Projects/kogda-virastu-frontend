@@ -83,6 +83,8 @@ import {
   setTopFeed,
   setNewFeed,
   clearTopFeed,
+  setPendingFeed,
+  clearPendingFeed,
 } from './viewSlice';
 
 import {
@@ -402,4 +404,6 @@ export {
   declineArticlePostSucceeded,
   declineArticlePostFailed,
   setNewFeed,
+  setPendingFeed,
+  clearPendingFeed,
 };

@@ -87,7 +87,7 @@ const BasicInvertedButton = styled.button<TBasicButtonProps>`
   box-sizing: border-box;
   display: flex;
   flex-flow: row nowrap;
-  justify-content: flex-start;
+  justify-content: flex-end;
   align-items: center;
   color: ${({ colorScheme, theme: { button }, disabled }) => getPropOnCondition(disabled, button[colorScheme].default, button[colorScheme].disabled)};
   background-color: ${({ colorScheme, theme: { button } }) => button[colorScheme].font};
