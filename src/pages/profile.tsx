@@ -11,6 +11,7 @@ import {
   clearProfileFetchNotFound, clearErrorMessage, clearErrorObject, clearView,
 } from '../store';
 import ProfilePageLayout from '../layouts/profile-page-layout';
+import { Preloader } from '../ui-lib';
 
 const Profile: FC = () => {
   const dispatch = useDispatch();
@@ -33,6 +34,7 @@ const Profile: FC = () => {
   );
   const { isProfileNotFound } = useSelector((state) => state.api);
   const totalCount = useSelector((state) => state.all.articlesCount);
+  const { loading } = useSelector((state) => state.api);
   const { username } = useParams<{ username: string }>();
 
   useEffect(() => {
@@ -57,6 +59,8 @@ const Profile: FC = () => {
       navigate('/no-user');
     }
   }, [dispatch, navigate, isProfileNotFound]);
+
+  if (loading) return <Preloader />;
 
   return (
     <ProfilePageLayout>

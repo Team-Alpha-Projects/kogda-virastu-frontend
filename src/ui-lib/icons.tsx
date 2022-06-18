@@ -102,6 +102,8 @@ const DefaultAvatar = styled(AvatarPic)<TIconProps>`
 const BasicAvatar = styled.img<IBasicAvatar>`
   box-sizing: border-box;
   border-radius: 50%;
+  object-fit: cover;
+  object-position: center;
   margin-right: ${({ distance }) => distance ?? 0}px;
   border-width: ${({ bordered, borderProps: { width } }) => getAvatarBorderProp(bordered, width)}px;
   border-color: ${({ bordered, borderProps: { color } }) => getAvatarBorderProp(bordered, color)};
@@ -133,7 +135,7 @@ export const AvatarIcon : FC<TAvatarIconProps> = ({
     <BasicAvatar
       borderProps={borderProps}
       bordered={!!image && size === 'small'}
-      // alt={name}
+      alt={name}
       src={image}
       width={`${avatarSize[size].width}px`}
       height={`${avatarSize[size].height}px`}

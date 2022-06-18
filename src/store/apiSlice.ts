@@ -42,6 +42,7 @@ type TAPIState = {
   profileImagePostingSucceeded: boolean,
   profileImagePostingFailed: boolean,
   areArticlesRequested: boolean,
+  loading: boolean,
 };
 
 const initialState : TAPIState = {
@@ -85,6 +86,7 @@ const initialState : TAPIState = {
   profileImagePostingSucceeded: false,
   profileImagePostingFailed: false,
   areArticlesRequested: false,
+  loading: false,
 };
 
 const apiSlice = createSlice({
@@ -110,13 +112,13 @@ const apiSlice = createSlice({
       ...state, errorObject: null,
     }),
     allPostsRequested: (state) => ({
-      ...state, isAllPostsRequested: true,
+      ...state, isAllPostsRequested: true, loading: true,
     }),
     allPostsRequestSucceeded: (state) => ({
-      ...state, isAllPostsRequested: false,
+      ...state, isAllPostsRequested: false, loading: false,
     }),
     allPostsRequestFailed: (state, action: PayloadAction<TAPIError>) => ({
-      ...state, isUserRegistering: false, errorObject: action.payload,
+      ...state, isUserRegistering: false, errorObject: action.payload, loading: false,
     }),
     userRegistrationRequested: (state) => ({
       ...state, isUserRegistering: true,
@@ -155,13 +157,13 @@ const apiSlice = createSlice({
       ...state, areUsersFetching: false, errorObject: action.payload,
     }),
     userPatchRequested: (state) => ({
-      ...state, isUserPatching: true,
+      ...state, isUserPatching: true, loading: true,
     }),
     userPatchSucceeded: (state) => ({
-      ...state, isUserPatching: false,
+      ...state, isUserPatching: false, loading: false,
     }),
     userPatchFailed: (state, action: PayloadAction<TAPIError>) => ({
-      ...state, isUserPatching: false, errorObject: action.payload,
+      ...state, isUserPatching: false, errorObject: action.payload, loading: false,
     }),
     publicFeedRequested: (state) => ({
       ...state, isPublicFeedFetching: true,
@@ -173,13 +175,13 @@ const apiSlice = createSlice({
       ...state, isPublicFeedFetching: false, errorObject: action.payload,
     }),
     articleFetchRequested: (state) => ({
-      ...state, isArticleFetching: true, isArticleNotFound: false,
+      ...state, isArticleFetching: true, isArticleNotFound: false, loading: true,
     }),
     articleFetchSucceeded: (state) => ({
-      ...state, isArticleFetching: false, isArticleNotFound: false,
+      ...state, isArticleFetching: false, isArticleNotFound: false, loading: false,
     }),
     articleFetchFailed: (state, action: PayloadAction<TAPIError>) => ({
-      ...state, isArticleFetching: false, errorObject: action.payload,
+      ...state, isArticleFetching: false, errorObject: action.payload, loading: false,
     }),
     setArticleFetchNotFound: (state) => ({
       ...state, isArticleNotFound: true,
@@ -188,13 +190,13 @@ const apiSlice = createSlice({
       ...state, isArticleNotFound: false,
     }),
     privateFeedRequested: (state) => ({
-      ...state, isPrivateFeedFetching: true,
+      ...state, isPrivateFeedFetching: true, loading: true,
     }),
     privateFeedSucceeded: (state) => ({
-      ...state, isPrivateFeedFetching: false,
+      ...state, isPrivateFeedFetching: false, loading: false,
     }),
     privateFeedFailed: (state, action: PayloadAction<TAPIError>) => ({
-      ...state, isPrivateFeedFetching: false, errorObject: action.payload,
+      ...state, isPrivateFeedFetching: false, errorObject: action.payload, loading: false,
     }),
     articlePostRequested: (state) => ({
       ...state, isArticlePosting: true, sArticlePostingSucceeded: false,
@@ -302,13 +304,13 @@ const apiSlice = createSlice({
       ...state, isCommentDeleting: false, errorObject: action.payload,
     }),
     profileFetchRequested: (state) => ({
-      ...state, isProfileFetching: true, isProfileNotFound: false,
+      ...state, isProfileFetching: true, isProfileNotFound: false, loading: true,
     }),
     profileFetchSucceeded: (state) => ({
-      ...state, isProfileFetching: false, isProfileNotFound: false,
+      ...state, isProfileFetching: false, isProfileNotFound: false, loading: false,
     }),
     profileFetchFailed: (state, action: PayloadAction<TAPIError>) => ({
-      ...state, isProfileFetching: false, errorObject: action.payload,
+      ...state, isProfileFetching: false, errorObject: action.payload, loading: false,
     }),
     setProfileFetchNotFound: (state) => ({
       ...state, isProfileNotFound: true,
