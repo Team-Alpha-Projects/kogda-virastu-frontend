@@ -103,6 +103,10 @@ export interface IFetchUsers {
   () : AxiosPromise<TAPIUsersRequest | null>
 }
 
+export interface IModerArticle {
+  (slug: string): AxiosPromise<TAPIArticle>;
+}
+
 export type {
   TAPIArticle,
   TAPIArticles,

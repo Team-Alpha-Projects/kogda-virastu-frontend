@@ -83,6 +83,8 @@ import {
   setTopFeed,
   setNewFeed,
   clearTopFeed,
+  setPendingFeed,
+  clearPendingFeed,
 } from './viewSlice';
 
 import {
@@ -109,6 +111,9 @@ import {
   privateFeedRequested,
   privateFeedSucceeded,
   privateFeedFailed,
+  pendingFeedSucceeded,
+  pendingFeedFailed,
+  pendingFeedRequested,
   articlePostRequested,
   articlePostSucceeded,
   articlePostFailed,
@@ -187,6 +192,15 @@ import {
   topArticlesRequested,
   topArticlesSucceeded,
   topArticlesFailed,
+  publishArticlePostRequested,
+  publishArticlePostSucceeded,
+  publishArticlePostFailed,
+  holdArticlePostRequested,
+  holdArticlePostSucceeded,
+  holdArticlePostFailed,
+  declineArticlePostRequested,
+  declineArticlePostSucceeded,
+  declineArticlePostFailed,
 } from './apiSlice';
 
 import {
@@ -281,6 +295,9 @@ export {
   publicFeedRequested,
   publicFeedSucceeded,
   publicFeedFailed,
+  pendingFeedSucceeded,
+  pendingFeedFailed,
+  pendingFeedRequested,
   articleFetchRequested,
   articleFetchSucceeded,
   articleFetchFailed,
@@ -377,5 +394,16 @@ export {
   topArticlesRequested,
   topArticlesSucceeded,
   topArticlesFailed,
+  publishArticlePostRequested,
+  publishArticlePostSucceeded,
+  publishArticlePostFailed,
+  holdArticlePostRequested,
+  holdArticlePostSucceeded,
+  holdArticlePostFailed,
+  declineArticlePostRequested,
+  declineArticlePostSucceeded,
+  declineArticlePostFailed,
   setNewFeed,
+  setPendingFeed,
+  clearPendingFeed,
 };

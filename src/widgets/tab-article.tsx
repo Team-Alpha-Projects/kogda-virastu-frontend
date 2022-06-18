@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import FeedRibbon from './feed-ribbon';
 import { TTabProps } from '../types/styles.types';
 import SubscribedFeedRibbon from './subscribed-feed-ribbon';
+import { useSelector } from '../services/hooks';
+import AdminFeedRibbon from './admin-feed-ribbon';
 
 const TabsContainer = styled.div`
   overflow: hidden;
@@ -30,9 +32,13 @@ const TabMySubscriptions = styled(Tab)<TTabProps>`
   border-bottom: ${({ border }) => border};
 `;
 
+const TabAdmin = styled(Tab) <TTabProps>`
+  border-bottom: ${({ border }) => border};
+`;
+
 const TabArticle: FC = () => {
   const [activeTab, setActiveTab] = useState<number>(1);
-
+  const { roles } = useSelector((state) => state.profile);
   const togglTab = (index: number) => {
     setActiveTab(index);
   };
@@ -42,9 +48,13 @@ const TabArticle: FC = () => {
       <TabsContainer>
         <TabAllPosts border={activeTab === 1 ? '2px solid #008AFF' : 'none'} onClick={() => togglTab(1)}>Все посты</TabAllPosts>
         <TabMySubscriptions border={activeTab === 2 ? '2px solid #008AFF' : 'none'} onClick={() => togglTab(2)}>Мои подписки</TabMySubscriptions>
+        {roles && roles.includes('admin') && (
+        <TabAdmin border={activeTab === 3 ? '2px solid #008AFF' : 'none'} onClick={() => togglTab(3)}>На модерации</TabAdmin>
+        )}
       </TabsContainer>
       {activeTab === 1 && <FeedRibbon />}
       {activeTab === 2 && <SubscribedFeedRibbon />}
+      {activeTab === 3 && <AdminFeedRibbon />}
     </>
   );
 };
