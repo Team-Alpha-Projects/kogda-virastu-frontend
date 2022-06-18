@@ -10,6 +10,7 @@ type TAPIState = {
   isUserLoggingIn: boolean,
   isUserPatching: boolean,
   isPublicFeedFetching: boolean,
+  isPendingFeedFetching: boolean,
   isArticleFetching: boolean,
   isArticleNotFound: boolean,
   isPrivateFeedFetching: boolean,
@@ -42,6 +43,9 @@ type TAPIState = {
   profileImagePostingSucceeded: boolean,
   profileImagePostingFailed: boolean,
   areArticlesRequested: boolean,
+  isPublishArticlePosting: boolean,
+  isHoldArticlePosting: boolean,
+  isDeclineArticlePosting: boolean,
 };
 
 const initialState : TAPIState = {
@@ -53,6 +57,7 @@ const initialState : TAPIState = {
   isUserFetching: false,
   isUserPatching: false,
   isPublicFeedFetching: false,
+  isPendingFeedFetching: false,
   isArticleFetching: false,
   isArticleNotFound: false,
   isPrivateFeedFetching: false,
@@ -85,6 +90,9 @@ const initialState : TAPIState = {
   profileImagePostingSucceeded: false,
   profileImagePostingFailed: false,
   areArticlesRequested: false,
+  isPublishArticlePosting: false,
+  isHoldArticlePosting: false,
+  isDeclineArticlePosting: false,
 };
 
 const apiSlice = createSlice({
@@ -171,6 +179,15 @@ const apiSlice = createSlice({
     }),
     publicFeedFailed: (state, action: PayloadAction<TAPIError>) => ({
       ...state, isPublicFeedFetching: false, errorObject: action.payload,
+    }),
+    pendingFeedRequested: (state) => ({
+      ...state, isPendingFeedFetching: true,
+    }),
+    pendingFeedSucceeded: (state) => ({
+      ...state, isPendingFeedFetching: false,
+    }),
+    pendingFeedFailed: (state, action: PayloadAction<TAPIError>) => ({
+      ...state, isPendingFeedFetching: false, errorObject: action.payload,
     }),
     articleFetchRequested: (state) => ({
       ...state, isArticleFetching: true, isArticleNotFound: false,
@@ -412,6 +429,33 @@ const apiSlice = createSlice({
     topArticlesFailed: (state, action: PayloadAction<TAPIError>) => ({
       ...state, areArticlesRequested: false, errorObject: action.payload,
     }),
+    publishArticlePostRequested: (state) => ({
+      ...state, isPublishArticlePosting: true,
+    }),
+    publishArticlePostSucceeded: (state) => ({
+      ...state, isPublishArticlePosting: false,
+    }),
+    publishArticlePostFailed: (state, action: PayloadAction<TAPIError>) => ({
+      ...state, isPublishArticlePosting: false, errorObject: action.payload,
+    }),
+    holdArticlePostRequested: (state) => ({
+      ...state, isHoldArticlePosting: true,
+    }),
+    holdArticlePostSucceeded: (state) => ({
+      ...state, isHoldArticlePosting: false,
+    }),
+    holdArticlePostFailed: (state, action: PayloadAction<TAPIError>) => ({
+      ...state, isHoldArticlePosting: false, errorObject: action.payload,
+    }),
+    declineArticlePostRequested: (state) => ({
+      ...state, isDeclineArticlePosting: true,
+    }),
+    declineArticlePostSucceeded: (state) => ({
+      ...state, isDeclineArticlePosting: false,
+    }),
+    declineArticlePostFailed: (state, action: PayloadAction<TAPIError>) => ({
+      ...state, isDeclineArticlePosting: false, errorObject: action.payload,
+    }),
   },
 });
 
@@ -444,6 +488,9 @@ export const {
   publicFeedRequested,
   publicFeedSucceeded,
   publicFeedFailed,
+  pendingFeedSucceeded,
+  pendingFeedFailed,
+  pendingFeedRequested,
   articleFetchRequested,
   articleFetchSucceeded,
   articleFetchFailed,
@@ -518,5 +565,14 @@ export const {
   topArticlesRequested,
   topArticlesSucceeded,
   topArticlesFailed,
+  publishArticlePostRequested,
+  publishArticlePostSucceeded,
+  publishArticlePostFailed,
+  holdArticlePostRequested,
+  holdArticlePostSucceeded,
+  holdArticlePostFailed,
+  declineArticlePostRequested,
+  declineArticlePostSucceeded,
+  declineArticlePostFailed,
 } = apiSlice.actions;
 export default apiReducer;

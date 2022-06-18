@@ -1,4 +1,4 @@
-import React, { FC, MouseEventHandler, useState } from 'react';
+import React, { FC, MouseEventHandler } from 'react';
 import { FormattedDate } from 'react-intl';
 import DOMPurify from 'isomorphic-dompurify';
 import { useNavigate } from 'react-router-dom';
@@ -6,6 +6,9 @@ import styled from 'styled-components';
 import { useDispatch, useSelector } from '../services/hooks';
 import {
   addLikeThunk, deleteLikeThunk,
+  publishArticleThunk,
+  holdArticleThunk,
+  declineArticleThunk,
 } from '../thunks';
 import { DeletePostButton, EditPostButton } from '../ui-lib';
 import { openConfirm } from '../store';
@@ -20,10 +23,6 @@ import {
 
 type TArticleProps = {
   slug: string;
-};
-
-type TAdminProps = {
-  admin: boolean;
 };
 
 type TArticleActionsProps = {
@@ -143,32 +142,34 @@ const ArticleActions: FC<TArticleActionsProps> = ({ onClickEdit, onClickDelete }
   </ArticleActionsContainer>
 );
 
-const ArticleAdminActions: FC<TAdminProps> = ({ admin }) => {
-  const [isPublic, setPublic] = useState(false);
+const ArticleAdminActions: FC = () => {
+  const dispatch = useDispatch();
+  const { article } = useSelector((state) => state.view);
+
   const onPublicClick = () => {
-    setPublic(true);
+    dispatch(publishArticleThunk(article?.slug));
   };
 
   const onRemoveClick = () => {
-    setPublic(false);
+    dispatch(holdArticleThunk(article?.slug));
   };
 
-  const onClick = () => {
-    console.log('click');
+  const onRejectClick = () => {
+    dispatch(declineArticleThunk(article?.slug));
   };
 
   return (
     <>
-      {isPublic && admin && (
+      {article?.state === 'published' && (
         <ArticleAdminActionsContainer>
-          <PublishedButton onClick={onClick} />
+          <PublishedButton onClick={onRemoveClick} />
           <RemoveFromPublicationButton onClick={onRemoveClick} />
         </ArticleAdminActionsContainer>
       )}
-      {!isPublic && admin && (
+      {article?.state === 'pending' && (
         <ArticleAdminActionsContainer>
           <PublishButton onClick={onPublicClick} />
-          <RejectButton onClick={onClick} />
+          <RejectButton onClick={onRejectClick} />
         </ArticleAdminActionsContainer>
       )}
     </>
@@ -179,11 +180,13 @@ const Article: FC<TArticleProps> = ({ slug }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const { roles } = useSelector((state) => state.profile);
   const { article } = useSelector((state) => state.view);
   const currentUser = useSelector((state) => state.profile);
   const isAuthor = article?.author.username === currentUser.username;
   const articleBody = DOMPurify.sanitize(article?.body || '');
 
+  console.log(article?.state);
   const onClickDelete = () => {
     if (article) {
       dispatch(openConfirm());
@@ -205,18 +208,16 @@ const Article: FC<TArticleProps> = ({ slug }) => {
     }
   };
 
-  const admin = true;
-
   if (!article) {
     return null;
   }
   return (
     <ArticleContainer>
-      {isAuthor && !admin && (
+      {isAuthor && roles && !roles.includes('admin') && (
         <ArticleActions onClickDelete={onClickDelete} onClickEdit={onClickEdit} />
       )}
-      {admin && (
-        <ArticleAdminActions admin />
+      {roles && roles.includes('admin') && (
+        <ArticleAdminActions />
       )}
       <ArticleTitle>{article.title}</ArticleTitle>
       <ArticleAuthorContainer>

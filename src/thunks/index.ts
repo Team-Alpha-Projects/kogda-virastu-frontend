@@ -24,6 +24,10 @@ import getAllPostsThunk from './get-all-posts-thunk';
 import postImageThunk from './post-image-thunk';
 import getUsersThunk from './get-users-thunk';
 import patchRolesThunk from './patch-roles-thunk';
+import getPendingFeedThunk from './get-pending-feed-thunk';
+import publishArticleThunk from './post-publish-thunk';
+import holdArticleThunk from './post-hold-article-thunk';
+import declineArticleThunk from './post-decline-article-thunk';
 
 export {
   createCommentThunk,
@@ -52,4 +56,8 @@ export {
   postImageThunk,
   getUsersThunk,
   patchRolesThunk,
+  getPendingFeedThunk,
+  publishArticleThunk,
+  holdArticleThunk,
+  declineArticleThunk,
 };

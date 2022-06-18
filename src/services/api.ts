@@ -47,6 +47,7 @@ import {
   IPostInviteGeneration,
   IFetchUsers,
   IPatchRoles,
+  IModerArticle,
 } from '../types/API.types';
 import { UPLOAD_ROUTE } from '../constants/api.constants';
 
@@ -458,6 +459,38 @@ export const patchRoles : IPatchRoles = (
     url: `${ADMIN_ROUTE}/users/${user}/roles`,
     method: 'patch',
     data: rolesData,
+  };
+  return blogAPI(injectBearerToken(requestConfig));
+};
+
+export const fetchPendingArticles: IFetchArticles = (): AxiosPromise<TAPIArticles> => {
+  const requestConfig: AxiosRequestConfig = {
+    url: `${ADMIN_ROUTE}/articles/state/pending`,
+    method: 'get',
+  };
+  return blogAPI(injectBearerToken(requestConfig));
+};
+
+export const postPublishArticles: IModerArticle = (slug: string): AxiosPromise<TAPIArticle> => {
+  const requestConfig: AxiosRequestConfig = {
+    url: `${ADMIN_ROUTE}/articles/${slug}/publish`,
+    method: 'post',
+  };
+  return blogAPI(injectBearerToken(requestConfig));
+};
+
+export const postHoldArticles: IModerArticle = (slug: string): AxiosPromise<TAPIArticle> => {
+  const requestConfig: AxiosRequestConfig = {
+    url: `${ADMIN_ROUTE}/articles/${slug}/hold`,
+    method: 'post',
+  };
+  return blogAPI(injectBearerToken(requestConfig));
+};
+
+export const postDeclineArticles: IModerArticle = (slug: string): AxiosPromise<TAPIArticle> => {
+  const requestConfig: AxiosRequestConfig = {
+    url: `${ADMIN_ROUTE}/articles/${slug}/decline`,
+    method: 'post',
   };
   return blogAPI(injectBearerToken(requestConfig));
 };

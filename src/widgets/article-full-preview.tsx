@@ -1,4 +1,4 @@
-import React, { FC, MouseEventHandler, useState } from 'react';
+import React, { FC, MouseEventHandler } from 'react';
 import DOMPurify from 'isomorphic-dompurify';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
@@ -13,6 +13,8 @@ import {
   PublishedButton,
   RemoveFromPublicationButton,
 } from '../ui-lib/buttons';
+import { useDispatch, useSelector } from '../services/hooks';
+import { publishArticleThunk, holdArticleThunk, declineArticleThunk } from '../thunks';
 
 const ArticleCardContainer = styled.div`
     //width: 359px;
@@ -162,19 +164,19 @@ const ButonContainer = styled.div`
 
 const ArticleFullPreview: FC<TArticleFullPreview> = ({ article, onLikeClick }) => {
   const articleBody = DOMPurify.sanitize(article?.body || '');
+  const { roles } = useSelector((state) => state.profile);
+  const dispatch = useDispatch();
 
-  const [isPublic, setPublic] = useState(false);
-  const admin = true;
   const onPublicClick = () => {
-    setPublic(true);
+    dispatch(publishArticleThunk(article?.slug));
   };
 
   const onRemoveClick = () => {
-    setPublic(false);
+    dispatch(holdArticleThunk(article?.slug));
   };
 
-  const onClick = () => {
-    console.log('click');
+  const onRejectClick = () => {
+    dispatch(declineArticleThunk(article?.slug));
   };
 
   return (
@@ -200,16 +202,16 @@ const ArticleFullPreview: FC<TArticleFullPreview> = ({ article, onLikeClick }) =
         <Link className='link' to={`/article/${article.slug}`}>
           <FormattedMessage id='articleEnter' />
         </Link>
-        {isPublic && admin && (
+        {article?.state === 'published' && roles && roles.includes('admin') && (
           <ButonContainer>
-            <PublishedButton onClick={onClick} />
+            <PublishedButton onClick={onRemoveClick} />
             <RemoveFromPublicationButton onClick={onRemoveClick} />
           </ButonContainer>
         )}
-        {!isPublic && admin && (
+        {article?.state === 'pending' && roles && roles.includes('admin') && (
           <ButonContainer>
             <PublishButton onClick={onPublicClick} />
-            <RejectButton onClick={onClick} />
+            <RejectButton onClick={onRejectClick} />
           </ButonContainer>
         )}
       </ContentContainer>
