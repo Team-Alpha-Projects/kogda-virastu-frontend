@@ -19,6 +19,7 @@ import RegisterForm from './forms/register-form';
 import SettingsForm from './forms/settings-form';
 import ScrollRibbon from './scroll-ribbon';
 import FeedRibbon from './feed-ribbon';
+import PersonalFeedRibbon from './personal-feed-ribbon';
 import Slider from './slider';
 import UserList from './user-list';
 import UserRow from './user-row';
@@ -48,4 +49,5 @@ export {
   Slider,
   UserList,
   UserRow,
+  PersonalFeedRibbon,
 };

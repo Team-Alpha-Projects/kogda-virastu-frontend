@@ -1,9 +1,11 @@
 import React, { FC, MouseEventHandler, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from '../services/hooks';
 import { Divider, Preloader } from '../ui-lib';
 import ScrollRibbon from './scroll-ribbon';
 import ArticleFullPreview from './article-full-preview';
+
 import { addLikeThunk, deleteLikeThunk, getPublicFeedThunk } from '../thunks';
 import { dividerGray } from '../constants/colors';
 
@@ -61,15 +63,19 @@ const ItemWrapper = styled.li`
   };
 `;
 
-const FeedRibbon : FC = () => {
+const PersonalFeedRibbon : FC = () => {
   const dispatch = useDispatch();
   const posts = useSelector((state) => state.view.feed);
   const tags = useSelector((state) => state.view.selectedTags) ?? [];
   const { isPublicFeedFetching } = useSelector((state) => state.api);
+  const totalCount = useSelector((state) => state.all.articlesCount);
+  const { username } = useParams<{ username: string }>();
 
   useEffect(() => {
-    dispatch(getPublicFeedThunk());
-  }, [dispatch]);
+    if (username) {
+      dispatch(getPublicFeedThunk({ limit: totalCount ?? 20, author: username }));
+    }
+  }, [dispatch, username, totalCount]);
 
   if (!posts || isPublicFeedFetching) {
     return <Preloader />;
@@ -102,4 +108,4 @@ const FeedRibbon : FC = () => {
   );
 };
 
-export default FeedRibbon;
+export default PersonalFeedRibbon;

@@ -6,8 +6,6 @@ import { useDispatch, useSelector } from '../services/hooks';
 import { jwt } from '../services/api';
 import {
   deleteArticleThunk,
-  getAllPostsThunk,
-  getPublicFeedThunk,
   getUserThunk,
   getPopularTags,
 } from '../thunks';
@@ -43,12 +41,10 @@ const App = () => {
   const onConfirmErrorClose: IGenericVoidHandler = () => dispatch(clearErrorObject());
 
   useEffect(() => {
-    dispatch(getAllPostsThunk());
     dispatch(getPopularTags());
 
     if (jwt.test()) {
       dispatch(getUserThunk());
-      dispatch(getPublicFeedThunk());
     }
   }, [dispatch, username, nickname]);
 
