@@ -14,7 +14,12 @@ import {
   RemoveFromPublicationButton,
 } from '../ui-lib/buttons';
 import { useDispatch, useSelector } from '../services/hooks';
-import { publishArticleThunk, holdArticleThunk, declineArticleThunk } from '../thunks';
+import {
+  publishArticleThunk,
+  holdArticleThunk,
+  declineArticleThunk,
+  publishArticleUserThunk,
+} from '../thunks';
 
 const ArticleCardContainer = styled.div`
     //width: 359px;
@@ -132,6 +137,7 @@ const Article = styled.article<TElementWithImage>`
 type TArticleFullPreview = {
   article: TArticle,
   onLikeClick: MouseEventHandler,
+  postsIn: string,
 };
 
 const ImageContainer = styled.div`
@@ -159,13 +165,28 @@ const ButonContainer = styled.div`
   }
 `;
 
-const ArticleFullPreview: FC<TArticleFullPreview> = ({ article, onLikeClick }) => {
+const ArticleFullPreview: FC<TArticleFullPreview> = ({ article, onLikeClick, postsIn }) => {
   const articleBody = DOMPurify.sanitize(article?.body || '');
   const { roles } = useSelector((state) => state.profile);
   const dispatch = useDispatch();
+  const profile = useSelector(
+    (state) => state.view.profile,
+  )
+    ?? {
+      username: '',
+      nickname: '',
+      following: false,
+      email: '',
+      bio: '',
+      image: '',
+    };
 
   const onPublicClick = () => {
-    dispatch(publishArticleThunk(article?.slug));
+    if (article.author.username === profile.username && postsIn === 'top') {
+      dispatch(publishArticleUserThunk(article?.slug));
+    } else {
+      dispatch(publishArticleThunk(article?.slug));
+    }
   };
 
   const onRemoveClick = () => {
