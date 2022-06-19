@@ -95,7 +95,8 @@ const FeedRibbon : FC = () => {
             <ItemWrapper key={post.slug}>
               <ArticleFullPreview
                 article={post}
-                onLikeClick={onClick} />
+                onLikeClick={onClick}
+                postsIn='top' />
               {window.innerWidth > 765 && <Divider width={111} distance={0} />}
             </ItemWrapper>
           );
