@@ -18,7 +18,7 @@ import {
   publishArticleThunk,
   holdArticleThunk,
   declineArticleThunk,
-  publishArticleUserThunk,
+  getPendingFeedThunk,
 } from '../thunks';
 
 const ArticleCardContainer = styled.div`
@@ -137,7 +137,6 @@ const Article = styled.article<TElementWithImage>`
 type TArticleFullPreview = {
   article: TArticle,
   onLikeClick: MouseEventHandler,
-  postsIn: string,
 };
 
 const ImageContainer = styled.div`
@@ -165,32 +164,20 @@ const ButonContainer = styled.div`
   }
 `;
 
-const ArticleFullPreview: FC<TArticleFullPreview> = ({ article, onLikeClick, postsIn }) => {
+const ArticleFullPreview: FC<TArticleFullPreview> = ({ article, onLikeClick }) => {
   const articleBody = DOMPurify.sanitize(article?.body || '');
   const { roles } = useSelector((state) => state.profile);
   const dispatch = useDispatch();
-  const profile = useSelector(
-    (state) => state.view.profile,
-  )
-    ?? {
-      username: '',
-      nickname: '',
-      following: false,
-      email: '',
-      bio: '',
-      image: '',
-    };
 
   const onPublicClick = () => {
-    if (article.author.username === profile.username && postsIn === 'top') {
-      dispatch(publishArticleUserThunk(article?.slug));
-    } else {
-      dispatch(publishArticleThunk(article?.slug));
-    }
+    dispatch(publishArticleThunk(article?.slug));
   };
 
   const onRemoveClick = () => {
     dispatch(holdArticleThunk(article?.slug));
+    setTimeout(() => {
+      dispatch(getPendingFeedThunk());
+    }, 300);
   };
 
   const onRejectClick = () => {

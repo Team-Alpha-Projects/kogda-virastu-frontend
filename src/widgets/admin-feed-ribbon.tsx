@@ -97,8 +97,7 @@ const AdminFeedRibbon: FC = () => {
             <ItemWrapper key={post.slug}>
               <ArticleFullPreview
                 article={post}
-                onLikeClick={onClick}
-                postsIn='moder' />
+                onLikeClick={onClick} />
               {window.innerWidth > 765 && <Divider width={111} distance={0} />}
             </ItemWrapper>
           );

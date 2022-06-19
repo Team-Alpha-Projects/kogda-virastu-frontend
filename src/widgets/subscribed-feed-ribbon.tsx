@@ -77,11 +77,6 @@ const SubscribedFeedRibbon : FC = () => {
   }, [dispatch]);
 
   if (!posts || isPublicFeedFetching) {
-    // return (
-    //   <RegularText size='large' weight={500}>
-    //     <FormattedMessage id='loading' />
-    //   </RegularText>
-    // );
     return <Preloader />;
   }
 
@@ -105,8 +100,7 @@ const SubscribedFeedRibbon : FC = () => {
               <ItemWrapper key={post.slug}>
                 <ArticleFullPreview
                   article={post}
-                  onLikeClick={onClick}
-                  postsIn='top' />
+                  onLikeClick={onClick} />
                 {window.innerWidth > 765 && <Divider width={111} distance={0} />}
               </ItemWrapper>
             );
