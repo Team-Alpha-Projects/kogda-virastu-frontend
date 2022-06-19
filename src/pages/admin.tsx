@@ -14,6 +14,11 @@ const Page = styled.section`
   margin: 40px 0 40px 0;
   position: relative;
   z-index: 10;
+
+  @media screen and (max-width: 769px) {
+    box-sizing: border-box;
+    padding: 0 20px 0 20px;
+  }
 `;
 
 const Admin: FC = () => {
