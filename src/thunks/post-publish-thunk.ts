@@ -10,6 +10,7 @@ import {
 import { TAPIError } from '../services/api.types';
 import { makeErrorObject } from '../services/helpers';
 import getArticleThunk from './get-article-thunk';
+import getPublicFeedThunk from './get-public-feed-thunk';
 
 const publishArticleThunk: AppThunk = (slug: string) => async (dispatch, getState) => {
   try {
@@ -21,6 +22,9 @@ const publishArticleThunk: AppThunk = (slug: string) => async (dispatch, getStat
     setTimeout(() => {
       dispatch(getArticleThunk(slug));
     }, 400);
+    setTimeout(() => {
+      dispatch(getPublicFeedThunk());
+    }, 300);
   } catch (error) {
     dispatch(publishArticlePostFailed(makeErrorObject(error as AxiosError<TAPIError>)));
   }

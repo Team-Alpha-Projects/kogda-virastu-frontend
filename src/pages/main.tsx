@@ -1,13 +1,15 @@
-import React, { useEffect, FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import styled from 'styled-components';
 import { useIntl } from 'react-intl';
 import TopAnnounceWidget from '../widgets/top-announce-widget';
 import PopularTags from '../widgets/popular-tags';
 import { useSelector, useDispatch } from '../services/hooks';
-import { setTopLikedThunk, setNewPostsThunk } from '../thunks';
 import { Slider } from '../widgets';
 import TabArticle from '../widgets/tab-article';
 import { Preloader } from '../ui-lib';
+import {
+  setTopLikedThunk,
+} from '../thunks';
 
 const MainSection = styled.main`
   display: flex;
@@ -84,16 +86,13 @@ const RightColumn = styled.aside`
 `;
 
 const Main: FC = () => {
-  const dispatch = useDispatch();
   const intl = useIntl();
-  const { articles } = useSelector((state) => state.all);
   const { loading } = useSelector((state) => state.api);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    if (articles && articles.length > 0) {
-      dispatch(setTopLikedThunk());
-    }
-  }, [dispatch, articles]);
+    dispatch(setTopLikedThunk());
+  }, [dispatch]);
 
   return (
     <>

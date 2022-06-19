@@ -1,11 +1,9 @@
 import React, { FC, MouseEventHandler, useEffect } from 'react';
-import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from '../services/hooks';
-import { RegularText, Divider, Preloader } from '../ui-lib';
+import { Divider, Preloader } from '../ui-lib';
 import ScrollRibbon from './scroll-ribbon';
 import ArticleFullPreview from './article-full-preview';
-
 import { addLikeThunk, deleteLikeThunk, getPublicFeedThunk } from '../thunks';
 import { dividerGray } from '../constants/colors';
 
@@ -95,8 +93,7 @@ const FeedRibbon : FC = () => {
             <ItemWrapper key={post.slug}>
               <ArticleFullPreview
                 article={post}
-                onLikeClick={onClick}
-                postsIn='top' />
+                onLikeClick={onClick} />
               {window.innerWidth > 765 && <Divider width={111} distance={0} />}
             </ItemWrapper>
           );

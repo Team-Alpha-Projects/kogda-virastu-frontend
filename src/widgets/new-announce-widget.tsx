@@ -54,15 +54,15 @@ const ItemWrapper = styled.li`
 `;
 
 const NewAnnounceWidget: FC<TTopAnnounceWidgetProps> = ({ caption }) => {
-  const topArticles = useSelector((state) => state.view.newFeed);
-  if (topArticles) {
+  const posts = useSelector((state) => state.view.newFeed);
+  if (posts) {
     return (
       <TopAnnounce>
         <HeaderThreeText paddingCSS='padding-bottom: 24px;'>
           {caption}
         </HeaderThreeText>
         <TopContainer>
-          {topArticles.map((article: TArticle, index) => {
+          {posts.map((article: TArticle, index) => {
             const {
               author: { username, nickname, image },
               title,

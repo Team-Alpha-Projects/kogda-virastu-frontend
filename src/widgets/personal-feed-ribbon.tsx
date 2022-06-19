@@ -1,12 +1,12 @@
 import React, { FC, MouseEventHandler, useEffect } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from '../services/hooks';
-import { RegularText, Divider } from '../ui-lib';
+import { Divider, Preloader } from '../ui-lib';
 import ScrollRibbon from './scroll-ribbon';
 import ArticleFullPreview from './article-full-preview';
 
-import { addLikeThunk, deleteLikeThunk, getPendingFeedThunk } from '../thunks';
+import { addLikeThunk, deleteLikeThunk, getPublicFeedThunk } from '../thunks';
 import { dividerGray } from '../constants/colors';
 
 const RibbonWrapper = styled.ul`
@@ -54,39 +54,40 @@ const ItemWrapper = styled.li`
     };
 
   @media screen and (max-width: 765px) {
-    max-width: 100%;
-    width: 100%;
-    border-bottom: none;
     &:nth-child(odd) {
       padding-right: 0;
+    };
+
+  @media screen and (max-width:720px) {
+    border-bottom: none;
   };
 `;
 
-const AdminFeedRibbon: FC = () => {
+const PersonalFeedRibbon : FC = () => {
   const dispatch = useDispatch();
-  const posts = useSelector((state) => state.view.pendingFeed);
+  const posts = useSelector((state) => state.view.feed);
   const tags = useSelector((state) => state.view.selectedTags) ?? [];
   const { isPublicFeedFetching } = useSelector((state) => state.api);
+  const totalCount = useSelector((state) => state.all.articlesCount);
+  const { username } = useParams<{ username: string }>();
 
   useEffect(() => {
-    dispatch(getPendingFeedThunk());
-  }, [dispatch]);
+    if (username) {
+      dispatch(getPublicFeedThunk({ limit: totalCount ?? 20, author: username }));
+    }
+  }, [dispatch, username, totalCount]);
 
   if (!posts || isPublicFeedFetching) {
-    return (
-      <RegularText size='large' weight={500}>
-        <FormattedMessage id='loading' />
-      </RegularText>
-    );
+    return <Preloader />;
   }
 
   return (
     <ScrollRibbon>
       <RibbonWrapper>
         {posts.filter((post) => post.tagList.some((tag) => (tags.includes(tag)
-          || !tags
-          || tags.length < 1))).map((post) => {
-          const onClick: MouseEventHandler = () => {
+            || !tags
+            || tags.length < 1))).map((post) => {
+          const onClick : MouseEventHandler = () => {
             if (post.favorited) {
               dispatch(deleteLikeThunk(post.slug));
             } else {
@@ -107,4 +108,4 @@ const AdminFeedRibbon: FC = () => {
   );
 };
 
-export default AdminFeedRibbon;
+export default PersonalFeedRibbon;

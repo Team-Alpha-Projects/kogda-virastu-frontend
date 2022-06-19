@@ -10,7 +10,7 @@ import {
   NewAnnounceWidget,
 } from '../widgets';
 import {
-  getArticleThunk, getCommentsThunk, setNewPostsThunk, setTopLikedThunk,
+  getArticleThunk, getCommentsThunk, setNewPostsThunk, getPublicFeedThunk, setTopLikedThunk,
 } from '../thunks';
 import {
   clearArticleFetchNotFound, clearErrorMessage, clearErrorObject, resetArticle,
@@ -21,9 +21,7 @@ import { Preloader } from '../ui-lib';
 
 const desktopToTabletGapStep = (80 - 40) / (desktopBreakpoint - tabletBreakpoint);
 const tabletToMobileGapStep = (40 - 20) / (tabletBreakpoint - mobileViewThreshold);
-
 const tabletToMobileMainWidthStop = (720 - 595) / (tabletBreakpoint - mobileViewThreshold);
-
 const desktopToTabletAsideWidthStep = (359 - 227) / (desktopBreakpoint - tabletBreakpoint);
 
 const ArticlePageWrapper = styled.div`
@@ -104,20 +102,20 @@ const ArticlePage: FC = () => {
   const intl = useIntl();
   const { slug } = useParams();
   const { isArticleNotFound, isArticleRemoved, loading } = useSelector((state) => state.api);
-  const { articles } = useSelector((state) => state.all);
 
   useEffect(() => {
     dispatch(resetArticle());
     dispatch(getCommentsThunk(slug));
     dispatch(getArticleThunk(slug));
+    dispatch(getPublicFeedThunk());
   }, [dispatch, slug]);
 
   useEffect(() => {
-    if (articles && articles?.length > 0) {
+    dispatch(setTopLikedThunk());
+    setTimeout(() => {
       dispatch(setNewPostsThunk());
-      dispatch(setTopLikedThunk());
-    }
-  }, [dispatch, articles]);
+    }, 400);
+  }, [dispatch]);
 
   useEffect(() => {
     if (isArticleNotFound) {
@@ -133,7 +131,6 @@ const ArticlePage: FC = () => {
       navigate('/');
     }
   }, [navigate, isArticleRemoved]);
-
   if (loading) return <Preloader />;
 
   return (

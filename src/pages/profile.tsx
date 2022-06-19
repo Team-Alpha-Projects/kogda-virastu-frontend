@@ -2,9 +2,8 @@ import React, { FC, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from '../services/hooks';
 
-import { ProfileWidget, FeedRibbon } from '../widgets';
+import { ProfileWidget, PersonalFeedRibbon } from '../widgets';
 import {
-  getPublicFeedThunk,
   getUserProfileThunk,
 } from '../thunks';
 import {
@@ -33,10 +32,8 @@ const Profile: FC = () => {
       && (state.profile.username === state.view.profile?.username),
   );
   const { isProfileNotFound } = useSelector((state) => state.api);
-  const totalCount = useSelector((state) => state.all.articlesCount);
   const { loading } = useSelector((state) => state.api);
   const { username } = useParams<{ username: string }>();
-
   useEffect(() => {
     dispatch(clearView());
     dispatch(getUserProfileThunk(username));
@@ -44,12 +41,6 @@ const Profile: FC = () => {
       dispatch(clearView());
     };
   }, [dispatch, username]);
-
-  useEffect(() => {
-    if (!!profile.username && !!totalCount) {
-      dispatch(getPublicFeedThunk({ limit: totalCount ?? 20, author: username }));
-    }
-  }, [dispatch, username, totalCount, profile.username]);
 
   useEffect(() => {
     if (isProfileNotFound) {
@@ -73,7 +64,7 @@ const Profile: FC = () => {
         size='large'
         distance={0}
         color='' />
-      <FeedRibbon />
+      <PersonalFeedRibbon />
 
     </ProfilePageLayout>
 
