@@ -34,12 +34,8 @@ const MainContainer = styled.div`
     margin: 40px 0 0 0;
     flex-direction: column-reverse;
     gap: 0;
-    width: 359px;
-  }
-
-  @media screen and (max-width: 720px) {
+    width: 100%;
     padding: 0 20px;
-    width: 280px;
   }
 `;
 
@@ -56,12 +52,8 @@ const LeftColumn = styled.div`
   }
 
   @media screen and (max-width: 765px) {
-    width: 359px;
+    width: 100%;
   }
-
-  @media screen and (max-width: 720px) {
-    width: 280px;
-  } ;
 `;
 
 const RightColumn = styled.aside`
@@ -82,12 +74,13 @@ const RightColumn = styled.aside`
   @media screen and (max-width: 765px) {
     align-items: center;
     justify-content: center;
-    width: 359px;
+    width: 70%;
+    margin: 0 auto;
   }
 
-  @media screen and (max-width: 720px) {
-    width: 280px;
-  } ;
+  @media screen and (max-width: 540px) {
+    width: 100%;
+  };
 `;
 
 const Main: FC = () => {
