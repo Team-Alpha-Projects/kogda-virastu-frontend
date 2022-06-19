@@ -140,11 +140,8 @@ const ImageContainer = styled.div`
   height: 20vw;
 
   @media screen and (max-width: 765px) {
-    height: 170px;
-  }
-
-  @media screen and (max-width: 720px) {
-    height: 150px;
+    max-height: 405px;
+    height: 50vw;
   }
 `;
 

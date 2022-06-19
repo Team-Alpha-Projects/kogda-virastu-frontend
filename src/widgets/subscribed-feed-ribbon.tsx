@@ -54,12 +54,11 @@ const ItemWrapper = styled.li`
     };
 
   @media screen and (max-width: 765px) {
+    max-width: 100%;
+    width: 100%;
+    border-bottom: none;
     &:nth-child(odd) {
       padding-right: 0;
-    };
-
-  @media screen and (max-width:720px) {
-    border-bottom: none;
   };
 `;
 
@@ -85,11 +84,14 @@ const SubscribedFeedRibbon : FC = () => {
     // );
     return <Preloader />;
   }
+
+  const postsWithoutRejected = posts.filter((item) => item.state !== 'declined');
+
   if (isLogged) {
     return (
       <ScrollRibbon>
         <RibbonWrapper>
-          {posts.filter((post) => post.tagList.some((tag) => (tags.includes(tag)
+          {postsWithoutRejected.filter((post) => post.tagList.some((tag) => (tags.includes(tag)
               || !tags
               || tags.length < 1))).map((post) => {
             const onClick : MouseEventHandler = () => {

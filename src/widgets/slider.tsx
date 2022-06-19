@@ -43,6 +43,7 @@ const SlidersContainer = styled.div`
 
   @media screen and (max-width: 765px) {
       margin-bottom: 0;
+      max-width: 360px;
   }
 `;
 type TSlide = {
@@ -102,6 +103,7 @@ const Arrow = styled.button`
   border: none;
   background: transparent;
   cursor: pointer;
+  padding: 0;
 
   &:hover {
     transform: scale(1.1);
