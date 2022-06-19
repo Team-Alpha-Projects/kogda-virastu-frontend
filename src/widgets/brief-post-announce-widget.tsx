@@ -17,9 +17,7 @@ const BriefPostAnnounceWrapper = styled.article`
   @media screen and (max-width: 1918px) {
     width: 100%;
   }
-  @media screen and (max-width: 639px) {
-    width: 280px;
-  }
+  
 `;
 
 const BriefPostAnnounceWidget : React.FC<TBriefPostAnnounceProps> = ({

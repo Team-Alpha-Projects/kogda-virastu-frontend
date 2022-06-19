@@ -17,10 +17,9 @@ const Ribbon = styled.section`
   @media screen and (max-width:840px) {
     max-width: 720px;
   };
-  @media screen and (max-width:720px) {
-    max-width: 320px;
+  @media screen and (max-width:750px) {
+    max-width: 100%;
     box-sizing: border-box;
-    padding: 0 20px 0 20px;
   };
 `;
 
