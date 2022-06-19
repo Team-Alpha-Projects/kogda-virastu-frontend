@@ -10,7 +10,12 @@ import {
   getPopularTags,
 } from '../thunks';
 import basicThemes, { defaultTheme } from '../themes/index';
-import { closeConfirm, setLanguage, clearErrorObject } from '../store';
+import {
+  closeConfirm,
+  setLanguage,
+  clearErrorObject,
+  articleDeleteClear,
+} from '../store';
 import Header from '../widgets/Header';
 import Footer from '../widgets/Footer';
 import Profile from '../pages/profile';
@@ -36,6 +41,9 @@ const App = () => {
   const onConfirmDelete: IGenericVoidHandler = () => {
     dispatch(deleteArticleThunk(slug));
     dispatch(closeConfirm());
+    setTimeout(() => {
+      dispatch(articleDeleteClear());
+    }, 500);
   };
   const onConfirmClose: IGenericVoidHandler = () => dispatch(closeConfirm());
   const onConfirmErrorClose: IGenericVoidHandler = () => dispatch(clearErrorObject());
