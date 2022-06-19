@@ -16,7 +16,7 @@ const Row = styled.li`
   display: flex;
   flex-flow: row nowrap;
 
-  @media screen and (max-width: 320px) {
+  @media screen and (max-width: 370px) {
     flex-flow: column;
   }
 `;
@@ -28,7 +28,7 @@ const AvatarUsernameCont = styled.div`
   width: 280px;
   gap: 8px;
 
-  @media screen and (max-width: 320px) {
+  @media screen and (max-width: 370px) {
     margin-bottom: 16px;
   }
 `;
@@ -47,7 +47,7 @@ const UserName = styled.p`
 const RoleText = styled(UserName)`
   width: 200px;
 
-  @media screen and (max-width: 320px) {
+  @media screen and (max-width: 370px) {
     margin-left: 56px;
   }
 `;
@@ -60,7 +60,7 @@ const CheckWithLabelContainer = styled.label`
   gap: 8px;
   width: 160px;
 
-  @media screen and (max-width: 320px) {
+  @media screen and (max-width: 370px) {
     margin: 26px 0 0 28px;
   }
 `;

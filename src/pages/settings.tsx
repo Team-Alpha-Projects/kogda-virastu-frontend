@@ -11,6 +11,11 @@ const Page = styled.section`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  @media screen and (max-width: 600px) {
+    box-sizing: border-box;
+    padding: 0 20px 0 20px;
+  }
 `;
 
 const Settings = () => {

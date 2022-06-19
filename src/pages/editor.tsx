@@ -12,6 +12,11 @@ const Page = styled.section`
   z-index: 10;
   display: flex;
   justify-content: center;
+
+  @media screen and (max-width: 600px) {
+    box-sizing: border-box;
+    padding: 0 20px 0 20px;
+  }
 `;
 
 const Editor = () => {
