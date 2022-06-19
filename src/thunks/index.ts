@@ -28,6 +28,7 @@ import getPendingFeedThunk from './get-pending-feed-thunk';
 import publishArticleThunk from './post-publish-thunk';
 import holdArticleThunk from './post-hold-article-thunk';
 import declineArticleThunk from './post-decline-article-thunk';
+import publishArticleUserThunk from './post-publish-user-thunk';
 
 export {
   createCommentThunk,
@@ -60,4 +61,5 @@ export {
   publishArticleThunk,
   holdArticleThunk,
   declineArticleThunk,
+  publishArticleUserThunk,
 };
