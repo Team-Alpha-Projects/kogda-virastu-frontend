@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import LoginForm from '../widgets/forms/login-form';
@@ -27,7 +27,7 @@ const Login = () => {
   )
     && jwt.test();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (isLogged) {
       navigate('/');
     }

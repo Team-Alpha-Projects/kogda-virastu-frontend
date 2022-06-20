@@ -22,7 +22,7 @@ import { ReactComponent as EyeNoPic } from '../assets/images/icons/eyeNo-icon.sv
 import { ReactComponent as LeftArrowPic } from '../assets/images/icons/left-arrow.svg';
 import { ReactComponent as RightArrowPic } from '../assets/images/icons/right-arrow.svg';
 
-import { getAvatarBorderProp, testImageUrl } from '../services/helpers';
+import { getAvatarBorderProp } from '../services/helpers';
 import { blue, greySecondary } from '../constants/colors';
 
 type TAvatarSize = {
