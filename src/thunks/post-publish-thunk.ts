@@ -17,14 +17,19 @@ const publishArticleThunk: AppThunk = (slug: string) => async (dispatch, getStat
     dispatch(publishArticlePostRequested());
     await postPublishArticles(slug);
     const articles = getState().view.pendingFeed ?? [];
+    const currentUser = getState().profile.username;
+    const thisArticle = articles.filter((item) => item.slug === slug);
+
     dispatch(setPendingFeed(articles.filter((item) => item.slug !== slug)));
     dispatch(publishArticlePostSucceeded());
     setTimeout(() => {
       dispatch(getArticleThunk(slug));
     }, 400);
-    setTimeout(() => {
-      dispatch(getPublicFeedThunk());
-    }, 300);
+    if (thisArticle[0].author.username === currentUser) {
+      setTimeout(() => {
+        dispatch(getPublicFeedThunk());
+      }, 300);
+    }
   } catch (error) {
     dispatch(publishArticlePostFailed(makeErrorObject(error as AxiosError<TAPIError>)));
   }

@@ -66,7 +66,7 @@ export type TCommentProps = {
   createAt: Date;
   username: string;
   nickname: string;
-  onDeleteClick?: (commentId: string) => void;
+  onDeleteClick?: (commentId: string, isAuthor: boolean) => void;
   isAuthor: boolean,
   body: string,
   commentId: string,

@@ -11,6 +11,7 @@ import { TAPIError } from '../services/api.types';
 import { makeErrorObject } from '../services/helpers';
 import getArticleThunk from './get-article-thunk';
 import getPublicFeedThunk from './get-public-feed-thunk';
+import getPendingFeedThunk from './get-pending-feed-thunk';
 
 const declineArticleThunk: AppThunk = (slug: string) => async (dispatch, getState) => {
   try {
@@ -28,9 +29,12 @@ const declineArticleThunk: AppThunk = (slug: string) => async (dispatch, getStat
     setTimeout(() => {
       dispatch(getArticleThunk(slug));
     }, 400);
-    setTimeout(() => {
-      dispatch(getPublicFeedThunk());
-    }, 300);
+    if (thisArticle[0].author.username === currentUser) {
+      setTimeout(() => {
+        dispatch(getPendingFeedThunk());
+        dispatch(getPublicFeedThunk());
+      }, 300);
+    }
   } catch (error) {
     dispatch(declineArticlePostFailed(makeErrorObject(error as AxiosError<TAPIError>)));
   }

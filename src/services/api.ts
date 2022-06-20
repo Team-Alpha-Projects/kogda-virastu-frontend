@@ -494,3 +494,11 @@ export const postDeclineArticles: IModerArticle = (slug: string): AxiosPromise<T
   };
   return blogAPI(injectBearerToken(requestConfig));
 };
+
+export const declineComment : IDeleteComment = (slug: string, id: string) : AxiosPromise<null> => {
+  const requestConfig : AxiosRequestConfig = {
+    url: `${ADMIN_ROUTE}/articles/${slug}/comments/${id}/decline`,
+    method: 'POST',
+  };
+  return blogAPI(injectBearerToken(requestConfig));
+};
