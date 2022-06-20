@@ -1,4 +1,3 @@
-import { batch } from 'react-redux';
 import { AxiosError } from 'axios';
 import { fetchPendingArticles } from '../services/api';
 import {
@@ -16,16 +15,12 @@ const getPendingFeedThunk: AppThunk = (
   params: TAPIParamsObject,
 ) => async (dispatch) => {
   try {
-    batch(() => {
-      dispatch(pendingFeedRequested());
-    });
+    dispatch(pendingFeedRequested());
     const
       { data: { articles, articlesCount } } = await fetchPendingArticles(params);
-    batch(() => {
-      dispatch(setPendingFeed(articles));
-      dispatch(setFeedCount(articlesCount));
-      dispatch(pendingFeedSucceeded());
-    });
+    dispatch(setPendingFeed(articles));
+    dispatch(setFeedCount(articlesCount));
+    dispatch(pendingFeedSucceeded());
   } catch (error) {
     dispatch(pendingFeedFailed(makeErrorObject(error as AxiosError<TAPIError>)));
   }

@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from '../services/hooks';
 import { ProfileWidget, PersonalFeedRibbon } from '../widgets';
 import {
   getUserProfileThunk,
+  getPendingFeedThunk,
 } from '../thunks';
 import {
   clearProfileFetchNotFound, clearErrorMessage, clearErrorObject, clearView,
@@ -34,6 +35,7 @@ const Profile: FC = () => {
   const { isProfileNotFound } = useSelector((state) => state.api);
   const { loading } = useSelector((state) => state.api);
   const { username } = useParams<{ username: string }>();
+  const { roles } = useSelector((state) => state.profile);
   useEffect(() => {
     dispatch(clearView());
     dispatch(getUserProfileThunk(username));
@@ -41,6 +43,14 @@ const Profile: FC = () => {
       dispatch(clearView());
     };
   }, [dispatch, username]);
+
+  useEffect(() => {
+    if (roles && roles.includes('admin')) {
+      setTimeout(() => {
+        dispatch(getPendingFeedThunk());
+      }, 300);
+    }
+  }, [dispatch, roles]);
 
   useEffect(() => {
     if (isProfileNotFound) {
