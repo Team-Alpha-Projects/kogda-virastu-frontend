@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from '../services/hooks';
@@ -27,7 +27,7 @@ const Editor = () => {
   )
     && jwt.test();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!isLogged) {
       navigate('/login');
     }

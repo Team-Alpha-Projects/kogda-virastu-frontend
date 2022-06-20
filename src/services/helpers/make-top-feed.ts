@@ -1,4 +1,4 @@
-import { IComparator, TArticles } from '../types';
+import { TArticles } from '../types';
 
 const makeTopFeed = (
   articles: TArticles,

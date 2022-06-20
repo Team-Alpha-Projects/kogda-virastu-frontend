@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
-import { nanoid } from '@reduxjs/toolkit';
 import { TAPIUsers } from '../services/api.types';
 import UserRow from './user-row';
 
@@ -58,7 +57,7 @@ const UserList: FC<IUserList> = ({ users, title }) => (
     <ListTitle>{title}</ListTitle>
     <UserRows>
       {users && users.map((user) => (
-        <UserRow key={nanoid()} user={user} />
+        <UserRow key={user.nickname} user={user} />
       ))}
     </UserRows>
   </ListContainer>
