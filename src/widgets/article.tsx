@@ -8,7 +8,6 @@ import {
   addLikeThunk, deleteLikeThunk,
   publishArticleThunk,
   getPendingFeedThunk,
-  getPublicFeedThunk,
   holdArticleThunk,
   declineArticleThunk,
 } from '../thunks';
@@ -150,16 +149,10 @@ const ArticleAdminActions: FC = () => {
 
   const onPublishClick = () => {
     dispatch(publishArticleThunk(article?.slug));
-    setTimeout(() => {
-      dispatch(getPublicFeedThunk());
-    }, 300);
   };
 
   const onRemoveClick = () => {
     dispatch(holdArticleThunk(article?.slug));
-    setTimeout(() => {
-      dispatch(getPendingFeedThunk());
-    }, 300);
   };
 
   const onRejectClick = () => {
