@@ -28,9 +28,11 @@ const holdArticleThunk: AppThunk = (slug: string) => async (dispatch, getState) 
     setTimeout(() => {
       dispatch(getArticleThunk(slug));
     }, 400);
-    setTimeout(() => {
-      dispatch(getPublicFeedThunk());
-    }, 300);
+    if (thisArticle[0].author.username === currentUser) {
+      setTimeout(() => {
+        dispatch(getPublicFeedThunk());
+      }, 300);
+    }
   } catch (error) {
     dispatch(holdArticlePostFailed(makeErrorObject(error as AxiosError<TAPIError>)));
   }
