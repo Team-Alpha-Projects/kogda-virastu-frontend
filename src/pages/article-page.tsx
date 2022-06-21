@@ -29,7 +29,11 @@ const ArticlePageWrapper = styled.div`
   width: 100%;
   @media screen and (max-width:1035px) {
       max-width: 453px;
-    }
+  }
+
+  @media screen and (max-width:767px) {
+    max-width: 100%;
+  }
 `;
 
 const CommentInputWrapper = styled.div`
@@ -63,16 +67,10 @@ const ArticleSection = styled.section`
   @media screen and (max-width: 767px) {
     flex-direction: column-reverse;
     gap: 0;
-    max-width: 400px;
-  }
-  @media screen and (min-width: ${desktopBreakpoint}px) {
-    gap: 40px;
-  }
-
-
-  @media screen and (max-width: ${mobileViewThreshold}px) {
     padding: 40px 20px 0 20px;
-    width: 280px;
+    margin: 0;
+    box-sizing: border-box;
+    width: 100%;
   }
 `;
 const RightColumn = styled.aside`

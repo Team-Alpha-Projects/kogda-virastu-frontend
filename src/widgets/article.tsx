@@ -54,19 +54,14 @@ const ArticleTitle = styled.h1`
 
 const ArticleActionsContainer = styled.div`
   display: flex;
-  flex-flow: row wrap;
   justify-content: space-between;
-  && > button {
-    width:233px;
-    @media screen  and (max-width:725px) {
-      width:175px;
+  @media screen and (max-width:767px) {
+    flex-wrap:wrap;
+    &:first-child {
+      margin-top: 46px;
     }
+    row-gap: 10px;
   }
-`;
-
-const ArticleAdminActionsContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
 `;
 
 const ArticleAuthor = styled.p`
@@ -166,16 +161,16 @@ const ArticleAdminActions: FC = () => {
   return (
     <>
       {article?.state === 'published' && (
-        <ArticleAdminActionsContainer>
+        <ArticleActionsContainer>
           <PublishedButton onClick={onRemoveClick} />
           <RemoveFromPublicationButton onClick={onRemoveClick} />
-        </ArticleAdminActionsContainer>
+        </ArticleActionsContainer>
       )}
       {article?.state === 'pending' && (
-        <ArticleAdminActionsContainer>
+        <ArticleActionsContainer>
           <PublishButton onClick={onPublishClick} />
           <RejectButton onClick={onRejectClick} />
-        </ArticleAdminActionsContainer>
+        </ArticleActionsContainer>
       )}
     </>
   );
