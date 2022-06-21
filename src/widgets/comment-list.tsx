@@ -30,7 +30,6 @@ const CommentList: FC<CommentListProps> = ({ slug }) => {
   const { roles } = useSelector((state) => state.profile);
   const isAdmin = roles && roles.includes('admin');
   const onDeleteClick = (commentId: string, isAuthor: boolean) => {
-    console.log(isAuthor);
     if (isAdmin && isAuthor === false) {
       dispatch(declineCommentThunk(slug, commentId));
     } else { dispatch(deleteCommentThunk(slug, commentId)); }
