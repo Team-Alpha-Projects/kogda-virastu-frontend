@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { useDispatch, useSelector } from '../services/hooks';
 import { RegularText, Divider } from '../ui-lib';
 import ScrollRibbon from './scroll-ribbon';
-import ArticleFullPreview from './article-full-preview';
+import ArticleAdminPreview from './article-admin-preview';
 
 import { addLikeThunk, deleteLikeThunk, getPendingFeedThunk } from '../thunks';
 import { dividerGray } from '../constants/colors';
@@ -95,7 +95,7 @@ const AdminFeedRibbon: FC = () => {
           };
           return (
             <ItemWrapper key={post.slug}>
-              <ArticleFullPreview
+              <ArticleAdminPreview
                 article={post}
                 onLikeClick={onClick} />
               {window.innerWidth > 765 && <Divider width={111} distance={0} />}
