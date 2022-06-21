@@ -74,12 +74,12 @@ const FeedRibbon : FC = () => {
     return <Preloader />;
   }
 
-  const postsWithoutRejected = posts.filter((item) => item.state !== 'declined');
+  const publishedPosts = posts.filter((item) => item.state === 'published');
 
   return (
     <ScrollRibbon>
       <RibbonWrapper>
-        {postsWithoutRejected.filter((post) => post.tagList.some((tag) => (tags.includes(tag)
+        {publishedPosts.filter((post) => post.tagList.some((tag) => (tags.includes(tag)
             || !tags
             || tags.length < 1))).map((post) => {
           const onClick : MouseEventHandler = () => {

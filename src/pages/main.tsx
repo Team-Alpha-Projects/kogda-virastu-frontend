@@ -9,7 +9,6 @@ import TabArticle from '../widgets/tab-article';
 import { Preloader } from '../ui-lib';
 import {
   setTopLikedThunk,
-  getPendingFeedThunk,
 } from '../thunks';
 
 const MainSection = styled.main`
@@ -90,14 +89,10 @@ const Main: FC = () => {
   const intl = useIntl();
   const { loading } = useSelector((state) => state.api);
   const dispatch = useDispatch();
-  const { roles } = useSelector((state) => state.profile);
 
   useEffect(() => {
     dispatch(setTopLikedThunk());
-    if (roles && roles.includes('admin')) {
-      dispatch(getPendingFeedThunk());
-    }
-  }, [dispatch, roles]);
+  }, [dispatch]);
 
   return (
     <>

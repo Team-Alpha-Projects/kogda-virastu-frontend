@@ -10,6 +10,7 @@ import {
   getPendingFeedThunk,
   holdArticleThunk,
   declineArticleThunk,
+  getPublicFeedThunk,
 } from '../thunks';
 import { DeletePostButton, EditPostButton } from '../ui-lib';
 import { openConfirm } from '../store';
@@ -144,6 +145,9 @@ const ArticleAdminActions: FC = () => {
 
   const onPublishClick = () => {
     dispatch(publishArticleThunk(article?.slug));
+    setTimeout(() => {
+      dispatch(getPublicFeedThunk());
+    }, 300);
   };
 
   const onRemoveClick = () => {

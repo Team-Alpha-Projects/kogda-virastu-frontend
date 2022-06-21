@@ -7,6 +7,18 @@ import AuthorHeadingWidget from './author-heading-widget';
 import { TArticle } from '../types/types';
 import PreviewTags from './preview-tags';
 import { getPropOnCondition } from '../services/helpers';
+import {
+  PublishButton,
+  RejectButton,
+  PublishedButton,
+  RemoveFromPublicationButton,
+} from '../ui-lib/buttons';
+import { useDispatch, useSelector } from '../services/hooks';
+import {
+  publishArticleThunk,
+  holdArticleThunk,
+  declineArticleThunk,
+} from '../thunks';
 
 const ArticleCardContainer = styled.div`
     //width: 359px;
@@ -137,8 +149,36 @@ const ImageContainer = styled.div`
   }
 `;
 
-const ArticleFullPreview: FC<TArticleFullPreview> = ({ article, onLikeClick }) => {
+const ButonContainer = styled.div`
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  column-gap: 16px;
+
+  @media screen and (max-width: 1300px) {
+    flex-direction: column;
+    row-gap: 16px;
+    align-items:flex-start;
+  }
+`;
+
+const ArticleAdminPreview: FC<TArticleFullPreview> = ({ article, onLikeClick }) => {
   const articleBody = DOMPurify.sanitize(article?.body || '');
+  const { roles } = useSelector((state) => state.profile);
+  const dispatch = useDispatch();
+
+  const onPublicClick = () => {
+    dispatch(publishArticleThunk(article?.slug));
+  };
+
+  const onRemoveClick = () => {
+    dispatch(holdArticleThunk(article?.slug));
+  };
+
+  const onRejectClick = () => {
+    dispatch(declineArticleThunk(article?.slug));
+  };
 
   return (
     <ArticleCardContainer>
@@ -163,9 +203,21 @@ const ArticleFullPreview: FC<TArticleFullPreview> = ({ article, onLikeClick }) =
         <Link className='link' to={`/article/${article.slug}`}>
           <FormattedMessage id='articleEnter' />
         </Link>
+        {article?.state === 'published' && roles && roles.includes('admin') && (
+          <ButonContainer>
+            <PublishedButton onClick={onRemoveClick} />
+            <RemoveFromPublicationButton onClick={onRemoveClick} />
+          </ButonContainer>
+        )}
+        {article?.state === 'pending' && roles && roles.includes('admin') && (
+          <ButonContainer>
+            <PublishButton onClick={onPublicClick} />
+            <RejectButton onClick={onRejectClick} />
+          </ButonContainer>
+        )}
       </ContentContainer>
     </ArticleCardContainer>
   );
 };
 
-export default ArticleFullPreview;
+export default ArticleAdminPreview;

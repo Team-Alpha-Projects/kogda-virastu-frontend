@@ -86,6 +86,7 @@ const BasicInvertedButton = styled.button<TBasicButtonProps>`
   border-width: 0;
   box-sizing: border-box;
   display: flex;
+  cursor: pointer;
   flex-flow: row nowrap;
   justify-content: flex-end;
   align-items: center;
