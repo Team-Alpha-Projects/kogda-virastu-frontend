@@ -88,7 +88,7 @@ const SubscribedFeedRibbon : FC = () => {
         <RibbonWrapper>
           {postsWithoutRejected.filter((post) => post.tagList.some((tag) => (tags.includes(tag)
               || !tags
-              || tags.length < 1))).map((post) => {
+              || tags.length < 1))).reverse().map((post) => {
             const onClick : MouseEventHandler = () => {
               if (post.favorited) {
                 dispatch(deleteLikeThunk(post.slug));
