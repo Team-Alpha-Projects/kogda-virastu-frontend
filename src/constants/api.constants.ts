@@ -1,5 +1,4 @@
 export const API_ROOT = 'https://api.kogda-virastu.com';
-
 export const REGISTER_ROUTE = '/users';
 export const LOGIN_ROUTE = '/users/login';
 export const USER_ROUTE = '/user';
