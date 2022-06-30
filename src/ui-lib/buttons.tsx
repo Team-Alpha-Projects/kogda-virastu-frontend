@@ -16,6 +16,7 @@ import {
   LogoutIcon,
   HomeIcon,
   LoginIcon,
+  CheckIcon,
 } from './icons';
 import { getPropOnCondition, setColor } from '../services/helpers';
 import useMouseEvents from '../services/hooks/use-mouse-events';
@@ -30,10 +31,13 @@ type TBasicButtonProps = {
 
 export const BasicNormalButton = styled.button<TBasicButtonProps>`
  // width: 100%;
+  cursor: pointer;
+  max-height: 40px;
   padding: 8px 16px;
   border-radius: 4px;
   border-width: 0;
   box-sizing: border-box;
+  float: left;
   display: flex;
   flex-flow: row nowrap;
   justify-content: flex-start;
@@ -52,14 +56,39 @@ export const BasicNormalButton = styled.button<TBasicButtonProps>`
     }
   `;
 
+export const MarginedNormalButton = styled.button<TBasicButtonProps>`
+  // width: 100%;
+   max-height: 40px;
+   padding: 8px 16px;
+   border-radius: 4px;
+   border-width: 0;
+   box-sizing: border-box;
+   float: left;
+   margin: 0 8px 0 0;
+   display: flex;
+   flex-flow: row nowrap;
+   justify-content: flex-start;
+   align-items: center;
+   background-color: ${({ colorScheme, theme: { button }, disabled }) => getPropOnCondition(disabled, button[colorScheme].default, button[colorScheme].disabled)};
+   color: ${({ colorScheme, theme: { button } }) => button[colorScheme].font};
+ 
+   &:hover {
+     background-color: ${({ colorScheme, theme: { button }, disabled }) => getPropOnCondition(disabled, button[colorScheme].hover, button[colorScheme].disabled)};
+     }
+   &:active {
+     background-color: ${({ colorScheme, theme: { button }, disabled }) => getPropOnCondition(disabled, button[colorScheme].active, button[colorScheme].disabled)};
+     }
+   `;
+
 const BasicInvertedButton = styled.button<TBasicButtonProps>`
   padding: 8px 16px;
   border-radius: 4px;
   border-width: 0;
   box-sizing: border-box;
   display: flex;
+  cursor: pointer;
   flex-flow: row nowrap;
-  justify-content: flex-start;
+  justify-content: flex-end;
   align-items: center;
   color: ${({ colorScheme, theme: { button }, disabled }) => getPropOnCondition(disabled, button[colorScheme].default, button[colorScheme].disabled)};
   background-color: ${({ colorScheme, theme: { button } }) => button[colorScheme].font};
@@ -115,6 +144,51 @@ export const EditPostButton : FC<TButtonProps> = ({ onClick, disabled = false })
     </BasicNormalButton>
   );
 };
+
+export const PublishButton: FC<TButtonProps> = ({ onClick, disabled = false }) => (
+  <BasicNormalButton
+    colorScheme='blue'
+    disabled={disabled}
+    onClick={onClick}>
+    <RegularText size='large' weight={400} sansSerif>
+      <FormattedMessage id='publish' />
+    </RegularText>
+  </BasicNormalButton>
+);
+
+export const PublishedButton: FC<TButtonProps> = ({ onClick, disabled = true }) => (
+  <BasicNormalButton
+    colorScheme='blue'
+    disabled={disabled}
+    onClick={onClick}>
+    <RegularText size='large' weight={400} sansSerif>
+      <FormattedMessage id='ispublished' />
+    </RegularText>
+  </BasicNormalButton>
+);
+
+export const RejectButton: FC<TButtonProps> = ({ onClick, disabled = false }) => (
+  <BasicNormalButton
+    colorScheme='red'
+    disabled={disabled}
+    onClick={onClick}>
+    <RegularText size='large' weight={400} sansSerif>
+      <FormattedMessage id='reject' />
+    </RegularText>
+  </BasicNormalButton>
+);
+
+export const RemoveFromPublicationButton: FC<TButtonProps> = ({ onClick, disabled = false }) => (
+  <BasicNormalButton
+    colorScheme='red'
+    disabled={disabled}
+    onClick={onClick}>
+    <RegularText size='large' weight={400} sansSerif>
+      <FormattedMessage id='removepublished' />
+    </RegularText>
+  </BasicNormalButton>
+);
+
 export const DeletePostButton : FC<TButtonProps> = ({ onClick, disabled = false }) => {
   const theme = useTheme();
   const {
@@ -316,6 +390,23 @@ export const MenuNewPostButton : FC<TButtonProps> = ({ onClick, disabled = false
   );
 };
 
+export const MenuAdminButton : FC<TButtonProps> = ({ onClick, disabled = false }) => {
+  const theme = useTheme();
+  return (
+    <MenuButton
+      colorScheme='menu'
+      disabled={disabled}
+      onClick={onClick}>
+      <CheckIcon
+        color={theme.button.menu.font}
+        distance={iconDistance} />
+      <RegularText size='large' weight={500}>
+        <FormattedMessage id='adminPanel' />
+      </RegularText>
+    </MenuButton>
+  );
+};
+
 export const MenuLogoutButton : FC<TButtonProps> = ({ onClick, disabled = false }) => {
   const theme = useTheme();
   return (
@@ -366,3 +457,32 @@ export const HeaderLoginButton : FC<TButtonProps> = ({ onClick, disabled = false
     </BasicNormalButton>
   );
 };
+export const GenerateInviteButton : FC<TButtonProps> = ({ onClick, disabled = false }) => (
+  <MarginedNormalButton colorScheme='blue' disabled={disabled} type='button' onClick={onClick}>
+    <RegularText size='large' weight={500}>
+      <FormattedMessage id='generateInvite' />
+    </RegularText>
+  </MarginedNormalButton>
+);
+export const CopyInviteButton : FC<TButtonProps> = ({ onClick, disabled = false }) => (
+  <MarginedNormalButton
+    colorScheme='menu'
+    disabled={disabled}
+    type='button'
+    onClick={onClick}>
+    <RegularText
+      size='large'
+      weight={400}
+      font-family='Alegreya'
+      color='#62626A'>
+      <FormattedMessage id='copyInvite' />
+    </RegularText>
+  </MarginedNormalButton>
+);
+export const ConfirmErrorButton : FC<TButtonProps> = ({ onClick, disabled = false }) => (
+  <MarginedNormalButton colorScheme='blue' disabled={disabled} type='button' onClick={onClick}>
+    <RegularText size='large' weight={500}>
+      <FormattedMessage id='confirmError' />
+    </RegularText>
+  </MarginedNormalButton>
+);

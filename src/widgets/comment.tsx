@@ -42,7 +42,7 @@ const Comment: FC<TCommentProps> = ({
       nickname={nickname ?? username}
       onDeleteClick={() => {
         if (typeof onDeleteClick === 'function') {
-          onDeleteClick(commentId);
+          onDeleteClick(commentId, isAuthor);
         }
       }}
       isAuthor={isAuthor} />

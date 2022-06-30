@@ -1,4 +1,3 @@
-import { batch } from 'react-redux';
 import { AxiosError } from 'axios';
 import { loginUser, jwt } from '../services/api';
 import {
@@ -23,14 +22,12 @@ const loginUserThunk : AppThunk = () => async (dispatch, getState) => {
       },
     } = await loginUser(loginData?.email ?? '', loginData?.password ?? '');
     jwt.set(token);
-    batch(() => {
-      dispatch(userLoginSucceeded());
-      dispatch(setUser({
-        username, email, bio, image, nickname,
-      } as TUser));
-      dispatch(onLogin());
-      dispatch(resetFormLogin());
-    });
+    dispatch(userLoginSucceeded());
+    dispatch(setUser({
+      username, email, bio, image, nickname,
+    } as TUser));
+    dispatch(onLogin());
+    dispatch(resetFormLogin());
   } catch (error) {
     dispatch(userLoginFailed(makeErrorObject(error as AxiosError<TAPIError>)));
   }

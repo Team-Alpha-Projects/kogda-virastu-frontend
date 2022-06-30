@@ -10,6 +10,7 @@ type TAPIState = {
   isUserLoggingIn: boolean,
   isUserPatching: boolean,
   isPublicFeedFetching: boolean,
+  isPendingFeedFetching: boolean,
   isArticleFetching: boolean,
   isArticleNotFound: boolean,
   isPrivateFeedFetching: boolean,
@@ -32,6 +33,20 @@ type TAPIState = {
   isSettingsPatching: boolean,
   isSettingsUpdateSucceeded: boolean,
   isAllPostsRequested: boolean,
+  isTagFollowing: boolean,
+  isTagUnfollowing: boolean,
+  isInviteGenerating: boolean,
+  areUsersFetching: boolean,
+  areRolesPatching: boolean,
+  isInviteCopying: boolean,
+  profileImagePosting: boolean,
+  profileImagePostingSucceeded: boolean,
+  profileImagePostingFailed: boolean,
+  areArticlesRequested: boolean,
+  isPublishArticlePosting: boolean,
+  isHoldArticlePosting: boolean,
+  isDeclineArticlePosting: boolean,
+  loading: boolean,
 };
 
 const initialState : TAPIState = {
@@ -43,6 +58,7 @@ const initialState : TAPIState = {
   isUserFetching: false,
   isUserPatching: false,
   isPublicFeedFetching: false,
+  isPendingFeedFetching: false,
   isArticleFetching: false,
   isArticleNotFound: false,
   isPrivateFeedFetching: false,
@@ -65,6 +81,20 @@ const initialState : TAPIState = {
   isSettingsPatching: false,
   isSettingsUpdateSucceeded: false,
   isAllPostsRequested: false,
+  isTagFollowing: false,
+  isTagUnfollowing: false,
+  isInviteGenerating: false,
+  areUsersFetching: false,
+  areRolesPatching: false,
+  isInviteCopying: false,
+  profileImagePosting: false,
+  profileImagePostingSucceeded: false,
+  profileImagePostingFailed: false,
+  areArticlesRequested: false,
+  isPublishArticlePosting: false,
+  isHoldArticlePosting: false,
+  isDeclineArticlePosting: false,
+  loading: false,
 };
 
 const apiSlice = createSlice({
@@ -90,13 +120,13 @@ const apiSlice = createSlice({
       ...state, errorObject: null,
     }),
     allPostsRequested: (state) => ({
-      ...state, isAllPostsRequested: true,
+      ...state, isAllPostsRequested: true, loading: true,
     }),
     allPostsRequestSucceeded: (state) => ({
-      ...state, isAllPostsRequested: false,
+      ...state, isAllPostsRequested: false, loading: false,
     }),
     allPostsRequestFailed: (state, action: PayloadAction<TAPIError>) => ({
-      ...state, isUserRegistering: false, errorObject: action.payload,
+      ...state, isUserRegistering: false, errorObject: action.payload, loading: false,
     }),
     userRegistrationRequested: (state) => ({
       ...state, isUserRegistering: true,
@@ -125,14 +155,23 @@ const apiSlice = createSlice({
     userFetchFailed: (state, action: PayloadAction<TAPIError>) => ({
       ...state, isUserFetching: false, errorObject: action.payload,
     }),
+    usersFetchRequested: (state) => ({
+      ...state, areUsersFetching: true,
+    }),
+    usersFetchSucceeded: (state) => ({
+      ...state, areUsersFetching: false,
+    }),
+    usersFetchFailed: (state, action: PayloadAction<TAPIError>) => ({
+      ...state, areUsersFetching: false, errorObject: action.payload,
+    }),
     userPatchRequested: (state) => ({
-      ...state, isUserPatching: true,
+      ...state, isUserPatching: true, loading: true,
     }),
     userPatchSucceeded: (state) => ({
-      ...state, isUserPatching: false,
+      ...state, isUserPatching: false, loading: false,
     }),
     userPatchFailed: (state, action: PayloadAction<TAPIError>) => ({
-      ...state, isUserPatching: false, errorObject: action.payload,
+      ...state, isUserPatching: false, errorObject: action.payload, loading: false,
     }),
     publicFeedRequested: (state) => ({
       ...state, isPublicFeedFetching: true,
@@ -143,14 +182,23 @@ const apiSlice = createSlice({
     publicFeedFailed: (state, action: PayloadAction<TAPIError>) => ({
       ...state, isPublicFeedFetching: false, errorObject: action.payload,
     }),
+    pendingFeedRequested: (state) => ({
+      ...state, isPendingFeedFetching: true,
+    }),
+    pendingFeedSucceeded: (state) => ({
+      ...state, isPendingFeedFetching: false,
+    }),
+    pendingFeedFailed: (state, action: PayloadAction<TAPIError>) => ({
+      ...state, isPendingFeedFetching: false, errorObject: action.payload,
+    }),
     articleFetchRequested: (state) => ({
-      ...state, isArticleFetching: true, isArticleNotFound: false,
+      ...state, isArticleFetching: true, isArticleNotFound: false, loading: true,
     }),
     articleFetchSucceeded: (state) => ({
-      ...state, isArticleFetching: false, isArticleNotFound: false,
+      ...state, isArticleFetching: false, isArticleNotFound: false, loading: false,
     }),
     articleFetchFailed: (state, action: PayloadAction<TAPIError>) => ({
-      ...state, isArticleFetching: false, errorObject: action.payload,
+      ...state, isArticleFetching: false, errorObject: action.payload, loading: false,
     }),
     setArticleFetchNotFound: (state) => ({
       ...state, isArticleNotFound: true,
@@ -159,13 +207,13 @@ const apiSlice = createSlice({
       ...state, isArticleNotFound: false,
     }),
     privateFeedRequested: (state) => ({
-      ...state, isPrivateFeedFetching: true,
+      ...state, isPrivateFeedFetching: true, loading: true,
     }),
     privateFeedSucceeded: (state) => ({
-      ...state, isPrivateFeedFetching: false,
+      ...state, isPrivateFeedFetching: false, loading: false,
     }),
     privateFeedFailed: (state, action: PayloadAction<TAPIError>) => ({
-      ...state, isPrivateFeedFetching: false, errorObject: action.payload,
+      ...state, isPrivateFeedFetching: false, errorObject: action.payload, loading: false,
     }),
     articlePostRequested: (state) => ({
       ...state, isArticlePosting: true, sArticlePostingSucceeded: false,
@@ -273,13 +321,13 @@ const apiSlice = createSlice({
       ...state, isCommentDeleting: false, errorObject: action.payload,
     }),
     profileFetchRequested: (state) => ({
-      ...state, isProfileFetching: true, isProfileNotFound: false,
+      ...state, isProfileFetching: true, isProfileNotFound: false, loading: true,
     }),
     profileFetchSucceeded: (state) => ({
-      ...state, isProfileFetching: false, isProfileNotFound: false,
+      ...state, isProfileFetching: false, isProfileNotFound: false, loading: false,
     }),
     profileFetchFailed: (state, action: PayloadAction<TAPIError>) => ({
-      ...state, isProfileFetching: false, errorObject: action.payload,
+      ...state, isProfileFetching: false, errorObject: action.payload, loading: false,
     }),
     setProfileFetchNotFound: (state) => ({
       ...state, isProfileNotFound: true,
@@ -320,11 +368,107 @@ const apiSlice = createSlice({
       isSettingsUpdateSucceeded: false,
       errorObject: action.payload,
     }),
+    followTagRequested: (state) => ({
+      ...state, isTagFollowing: true,
+    }),
+    followTagSucceeded: (state) => ({
+      ...state, isTagFollowing: false,
+    }),
+    followTagFailed: (state, action: PayloadAction<TAPIError>) => ({
+      ...state, isTagFollowing: false, errorObject: action.payload,
+    }),
+    unfollowTagRequested: (state) => ({
+      ...state, isTagUnfollowing: true,
+    }),
+    unfollowTagSucceeded: (state) => ({
+      ...state, isTagUnfollowing: false,
+    }),
+    unfollowTagFailed: (state, action: PayloadAction<TAPIError>) => ({
+      ...state, isTagUnfollowing: false, errorObject: action.payload,
+    }),
+    generateInviteRequested: (state) => ({
+      ...state, isInviteGenerating: true,
+    }),
+    generateInviteSucceeded: (state) => ({
+      ...state, isInviteGenerating: false,
+    }),
+    rolesPatchRequested: (state) => ({
+      ...state, areRolesPatching: true,
+    }),
+    rolesPatchSucceeded: (state) => ({
+      ...state, areRolesPatching: false,
+    }),
+    rolesPatchFailed: (state, action: PayloadAction<TAPIError>) => ({
+      ...state, areRolesPatching: false, errorObject: action.payload,
+    }),
+    generateInviteFailed: (state, action: PayloadAction<TAPIError>) => ({
+      ...state, isInviteGenerating: false, errorObject: action.payload,
+    }),
+    copyInviteRequested: (state) => ({
+      ...state, isInviteCopying: true,
+    }),
+    copyInviteSucceeded: (state) => ({
+      ...state, isInviteCopying: false,
+    }),
+    copyInviteFailed: (state, action: PayloadAction<TAPIError>) => ({
+      ...state, isInviteCopying: false, errorObject: action.payload,
+    }),
+    profileImagePostRequested: (state) => ({
+      ...state, profileImagePosting: true, profileImagePostingSucceeded: false,
+    }),
+    profileImagePostSucceeded: (state) => ({
+      ...state, profileImagePosting: false, profileImagePostingSucceeded: true,
+    }),
+    profileImagePostingFailed: (state, action: PayloadAction<TAPIError>) => ({
+      ...state, profileImagePostSucceeded: false, errorObject: action.payload,
+    }),
+    topArticlesRequested: (state) => ({
+      ...state, areArticlesRequested: true,
+    }),
+    topArticlesSucceeded: (state) => ({
+      ...state, areArticlesRequested: false,
+    }),
+    topArticlesFailed: (state, action: PayloadAction<TAPIError>) => ({
+      ...state, areArticlesRequested: false, errorObject: action.payload,
+    }),
+    publishArticlePostRequested: (state) => ({
+      ...state, isPublishArticlePosting: true,
+    }),
+    publishArticlePostSucceeded: (state) => ({
+      ...state, isPublishArticlePosting: false,
+    }),
+    publishArticlePostFailed: (state, action: PayloadAction<TAPIError>) => ({
+      ...state, isPublishArticlePosting: false, errorObject: action.payload,
+    }),
+    holdArticlePostRequested: (state) => ({
+      ...state, isHoldArticlePosting: true,
+    }),
+    holdArticlePostSucceeded: (state) => ({
+      ...state, isHoldArticlePosting: false,
+    }),
+    holdArticlePostFailed: (state, action: PayloadAction<TAPIError>) => ({
+      ...state, isHoldArticlePosting: false, errorObject: action.payload,
+    }),
+    declineArticlePostRequested: (state) => ({
+      ...state, isDeclineArticlePosting: true,
+    }),
+    declineArticlePostSucceeded: (state) => ({
+      ...state, isDeclineArticlePosting: false,
+    }),
+    declineArticlePostFailed: (state, action: PayloadAction<TAPIError>) => ({
+      ...state, isDeclineArticlePosting: false, errorObject: action.payload,
+    }),
   },
 });
 
 const apiReducer = apiSlice.reducer;
 export const {
+  followTagRequested,
+  followTagSucceeded,
+  followTagFailed,
+  unfollowTagRequested,
+  unfollowTagSucceeded,
+  unfollowTagFailed,
   setSuccessMessage,
   setErrorMessage,
   clearSuccessMessage,
@@ -346,6 +490,9 @@ export const {
   publicFeedRequested,
   publicFeedSucceeded,
   publicFeedFailed,
+  pendingFeedSucceeded,
+  pendingFeedFailed,
+  pendingFeedRequested,
   articleFetchRequested,
   articleFetchSucceeded,
   articleFetchFailed,
@@ -402,5 +549,32 @@ export const {
   articleDeleteClear,
   articlePatchClear,
   articlePostClear,
+  generateInviteRequested,
+  generateInviteSucceeded,
+  usersFetchRequested,
+  usersFetchSucceeded,
+  usersFetchFailed,
+  rolesPatchRequested,
+  rolesPatchSucceeded,
+  rolesPatchFailed,
+  generateInviteFailed,
+  copyInviteRequested,
+  copyInviteSucceeded,
+  copyInviteFailed,
+  profileImagePostRequested,
+  profileImagePostSucceeded,
+  profileImagePostingFailed,
+  topArticlesRequested,
+  topArticlesSucceeded,
+  topArticlesFailed,
+  publishArticlePostRequested,
+  publishArticlePostSucceeded,
+  publishArticlePostFailed,
+  holdArticlePostRequested,
+  holdArticlePostSucceeded,
+  holdArticlePostFailed,
+  declineArticlePostRequested,
+  declineArticlePostSucceeded,
+  declineArticlePostFailed,
 } = apiSlice.actions;
 export default apiReducer;

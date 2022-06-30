@@ -16,7 +16,7 @@ const TextAreaStyle = styled.textarea<ITextAreaStyleProps>`
   ${({ isHasBorder }) => !isHasBorder && css`border: 0;`};
 `;
 
-const ContainerTextArea = styled.div`
+export const ContainerTextArea = styled.div`
   width: 100%;
   margin: 0;
   padding: 0;

@@ -19,8 +19,10 @@ import { ReactComponent as MinusPic } from '../assets/images/icons/minus-icon.sv
 import { ReactComponent as CrossPic } from '../assets/images/icons/cross-icon.svg';
 import { ReactComponent as EyePic } from '../assets/images/icons/eye-icon.svg';
 import { ReactComponent as EyeNoPic } from '../assets/images/icons/eyeNo-icon.svg';
+import { ReactComponent as LeftArrowPic } from '../assets/images/icons/left-arrow.svg';
+import { ReactComponent as RightArrowPic } from '../assets/images/icons/right-arrow.svg';
 
-import { getAvatarBorderProp, testImageUrl } from '../services/helpers';
+import { getAvatarBorderProp } from '../services/helpers';
 import { blue, greySecondary } from '../constants/colors';
 
 type TAvatarSize = {
@@ -34,6 +36,10 @@ const avatarSize : TAvatarSize = {
   large: {
     width: 230,
     height: 230,
+  },
+  medium: {
+    width: 40,
+    height: 40,
   },
   small: {
     width: 24,
@@ -96,6 +102,8 @@ const DefaultAvatar = styled(AvatarPic)<TIconProps>`
 const BasicAvatar = styled.img<IBasicAvatar>`
   box-sizing: border-box;
   border-radius: 50%;
+  object-fit: cover;
+  object-position: center;
   margin-right: ${({ distance }) => distance ?? 0}px;
   border-width: ${({ bordered, borderProps: { width } }) => getAvatarBorderProp(bordered, width)}px;
   border-color: ${({ bordered, borderProps: { color } }) => getAvatarBorderProp(bordered, color)};
@@ -114,7 +122,7 @@ export const AvatarIcon : FC<TAvatarIconProps> = ({
     color: blue,
     style: 'solid',
   };
-  if ((!image) || (!!image && !testImageUrl(image))) {
+  if ((!image)) { //  || (!!image && !testImageUrl(image)
     return (
       <DefaultAvatar
         width={`${avatarSize[size].width}px`}
@@ -157,7 +165,7 @@ export const CheckIcon = styled(CheckPic)<TIconProps>`
 
 export const HomeIcon = styled(HomePic)<TIconProps>`
   width: 24px;
-  height: 24px;
+  height: 24px; 
   display: block;
   margin-right: ${({ distance }) => distance ?? 0}px;
   & > path {
@@ -249,6 +257,24 @@ export const EyeNoIcon = styled(EyeNoPic)<TIconProps>`
   height: 24px;
   display: block;
   margin-right: ${({ distance }) => distance ?? 0}px;
+  & > path {
+    stroke: ${({ color }) => color};
+    }
+`;
+export const LeftArrowIcon = styled(LeftArrowPic)<TIconProps>`
+  width: 24px;
+  height: 24px;
+  display: block;
+  margin-right: ${({ distance }) => distance ?? 0}px;
+  & > path {
+    stroke: ${({ color }) => color};
+    }
+`;
+export const RightArrowIcon = styled(RightArrowPic)<TIconProps>`
+  width: 24px;
+  height: 24px;
+  display: block;
+  margin-left: ${({ distance }) => distance ?? 0}px;
   & > path {
     stroke: ${({ color }) => color};
     }

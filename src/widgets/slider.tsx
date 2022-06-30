@@ -3,6 +3,7 @@ import React, {
   FC, useState, MouseEventHandler,
 } from 'react';
 import { useIntl } from 'react-intl';
+import { LeftArrowIcon, RightArrowIcon } from '../ui-lib/icons';
 import BuletSlider from '../ui-lib/buledSlider';
 import { useSelector } from '../services/hooks';
 import BriefPostAnnounceWidget from './brief-post-announce-widget';
@@ -26,16 +27,24 @@ animation-delay: 0s;
 display: flex;
 transition: margin-right .3s;
 width: 100%;
+
+  .link {
+    display: flex;
+    width: 100%;
+    text-decoration: none;
+  }
 `;
 const SlidersContainer = styled.div`
-display: flex;
-flex-direction: column;
-align-items: center;
-margin-bottom: 22px;
-width: 100%;
-@media screen and (min-width: 768px) {
-    display: none;
-    }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 22px;
+  width: 100%;
+
+  @media screen and (max-width: 765px) {
+      margin-bottom: 0;
+      max-width: 360px;
+  }
 `;
 type TSlide = {
   data: TArticle;
@@ -61,6 +70,7 @@ const Slide: FC<TSlide> = ({ data, name, page }) => {
     return (
       <SlideContainer>
         <BriefPostAnnounceWidget
+          slug={slug}
           key={slug}
           username={username}
           nickname={nickname ?? username}
@@ -75,12 +85,30 @@ const Slide: FC<TSlide> = ({ data, name, page }) => {
   }
   return null;
 };
+
 const BuletBar = styled.div`
-        display: flex;
-        gap:12px;
-        padding-top:16px;
-        padding-bottom: 12px;
-    `;
+  display: flex;
+  gap:12px;
+  padding-top:16px;
+  padding-bottom: 40px;
+  max-width: 280px;
+  align-items: center;
+
+  @media screen and (max-width: 765px) {
+    max-width: 232px;
+  }
+`;
+
+const Arrow = styled.button`
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+`;
 
 const Slider: FC = () => {
   const data = useSelector((state) => state.view.topFeed) ?? [];
@@ -103,19 +131,25 @@ const Slider: FC = () => {
         ))
       }
       <BuletBar>
+        <Arrow type='button' onClick={() => { setPage((page - 1 + data.length) % data.length); }}>
+          <LeftArrowIcon color='grey' />
+        </Arrow>
         {
           data && range.map((pageSlide) => {
             const isActive = pageSlide === page;
-            const onClick: MouseEventHandler = () => {
+            const onClickBullet: MouseEventHandler = () => {
               setPage(pageSlide);
             };
             return (
-              <BuletSlider key={pageSlide} onClick={onClick} isActive={isActive} />
+              <BuletSlider key={pageSlide} onClick={onClickBullet} isActive={isActive} />
             );
           })
         }
+        <Arrow type='button' onClick={() => { setPage((page + 1) % data.length); }}>
+          <RightArrowIcon color='grey' />
+        </Arrow>
       </BuletBar>
-      <Divider distance={24} />
+      <Divider distance={0} />
     </SlidersContainer>
 
   );

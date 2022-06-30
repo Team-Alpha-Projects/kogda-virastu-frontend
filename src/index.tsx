@@ -14,15 +14,13 @@ const rootDiv = document.getElementById('root');
 const rootNode = createRoot(rootDiv as Element);
 
 rootNode.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <BrowserRouter>
-        <GlobalStyles />
-        <AlegreyaSansFonts />
-        <AlegreyaFonts />
-        <App />
-      </BrowserRouter>
-    </Provider>
-  </React.StrictMode>,
+  <Provider store={store}>
+    <BrowserRouter>
+      <GlobalStyles />
+      <AlegreyaSansFonts />
+      <AlegreyaFonts />
+      <App />
+    </BrowserRouter>
+  </Provider>,
 
 );

@@ -1,17 +1,17 @@
 import React, { FC, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { batch } from 'react-redux';
 import { useDispatch, useSelector } from '../services/hooks';
 
-import { ProfileWidget, FeedRibbon } from '../widgets';
+import { ProfileWidget, PersonalFeedRibbon } from '../widgets';
 import {
-  getPublicFeedThunk,
   getUserProfileThunk,
+  getPendingFeedThunk,
 } from '../thunks';
 import {
   clearProfileFetchNotFound, clearErrorMessage, clearErrorObject, clearView,
 } from '../store';
 import ProfilePageLayout from '../layouts/profile-page-layout';
+import { Preloader } from '../ui-lib';
 
 const Profile: FC = () => {
   const dispatch = useDispatch();
@@ -27,42 +27,41 @@ const Profile: FC = () => {
       bio: '',
       image: '',
     };
-
   const isUser = useSelector(
     (state) => !!state.profile.username
       && !!state.profile.email
       && (state.profile.username === state.view.profile?.username),
   );
   const { isProfileNotFound } = useSelector((state) => state.api);
-  const totalCount = useSelector((state) => state.all.articlesCount);
+  const { loading } = useSelector((state) => state.api);
   const { username } = useParams<{ username: string }>();
-
+  const { roles } = useSelector((state) => state.profile);
   useEffect(() => {
-    batch(() => {
-      dispatch(clearView());
-      dispatch(getUserProfileThunk(username));
-    });
+    dispatch(clearView());
+    dispatch(getUserProfileThunk(username));
     return () => {
       dispatch(clearView());
     };
   }, [dispatch, username]);
 
   useEffect(() => {
-    if (!!profile.username && !!totalCount) {
-      dispatch(getPublicFeedThunk({ limit: totalCount ?? 20, author: username }));
+    if (roles && roles.includes('admin')) {
+      setTimeout(() => {
+        dispatch(getPendingFeedThunk());
+      }, 300);
     }
-  }, [dispatch, username, totalCount, profile.username]);
+  }, [dispatch, roles]);
 
   useEffect(() => {
     if (isProfileNotFound) {
-      batch(() => {
-        dispatch(clearProfileFetchNotFound());
-        dispatch(clearErrorObject());
-        dispatch(clearErrorMessage());
-      });
+      dispatch(clearProfileFetchNotFound());
+      dispatch(clearErrorObject());
+      dispatch(clearErrorMessage());
       navigate('/no-user');
     }
   }, [dispatch, navigate, isProfileNotFound]);
+
+  if (loading) return <Preloader />;
 
   return (
     <ProfilePageLayout>
@@ -70,11 +69,12 @@ const Profile: FC = () => {
         userName={profile.nickname ?? profile.username}
         isFollow={profile.following}
         userImage={profile.image}
+        bio={profile.bio}
         isUser={isUser}
         size='large'
         distance={0}
         color='' />
-      <FeedRibbon />
+      <PersonalFeedRibbon />
 
     </ProfilePageLayout>
 

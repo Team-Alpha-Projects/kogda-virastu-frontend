@@ -1,5 +1,4 @@
 import { AxiosError } from 'axios';
-import { batch } from 'react-redux';
 import { AppThunk } from '../store/store.types';
 import {
   commentDeleteRequested,
@@ -20,14 +19,10 @@ const deleteCommentThunk: AppThunk = (
   try {
     const { status } = await deleteComment(slug, commentId);
     if (status === 204) {
-      batch(() => {
-        dispatch(commentDeleteSucceeded());
-        dispatch(setViewCommentsFeed(
-          commentsFeed?.filter((comment) => comment.id !== commentId) ?? [],
-        ));
-      });
-    } else {
-      dispatch(commentDeleteFailed({ errors: { 'Unexpected error': `Server replied with code ${status}` }, statusCode: status }));
+      dispatch(commentDeleteSucceeded());
+      dispatch(setViewCommentsFeed(
+        commentsFeed?.filter((comment) => comment.id !== commentId) ?? [],
+      ));
     }
   } catch (error) {
     dispatch(commentDeleteFailed(makeErrorObject(error as AxiosError<TAPIError>)));

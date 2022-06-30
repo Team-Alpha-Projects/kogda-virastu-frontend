@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from '../services/hooks';
-import { deleteCommentThunk } from '../thunks';
+import { deleteCommentThunk, declineCommentThunk, getCommentsThunk } from '../thunks';
 import Comment from './comment';
 
 const List = styled.ul`
@@ -27,9 +27,15 @@ const CommentList: FC<CommentListProps> = ({ slug }) => {
   const dispatch = useDispatch();
   const { commentsFeed: comments } = useSelector((store) => store.view);
   const currentUser = useSelector((state) => state.profile);
-
-  const onDeleteClick = (commentId: string) => {
-    dispatch(deleteCommentThunk(slug, commentId));
+  const { roles } = useSelector((state) => state.profile);
+  const isAdmin = roles && roles.includes('admin');
+  const onDeleteClick = (commentId: string, isAuthor: boolean) => {
+    if (isAdmin && isAuthor === false) {
+      dispatch(declineCommentThunk(slug, commentId));
+    } else { dispatch(deleteCommentThunk(slug, commentId)); }
+    setTimeout(() => {
+      dispatch(getCommentsThunk(slug));
+    }, 200);
   };
 
   if (!comments || !comments.length) {

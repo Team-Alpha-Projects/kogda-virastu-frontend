@@ -1,7 +1,7 @@
 import React from 'react';
 import styled, { useTheme } from 'styled-components';
 import { TCommentAuthorHeadingProps } from '../types/widgets.types';
-
+import { useSelector } from '../services/hooks';
 import Author from './author';
 import { DeleteIcon } from '../ui-lib';
 
@@ -22,7 +22,8 @@ const CommentAuthorHeading: React.FC<TCommentAuthorHeadingProps> = ({
   onDeleteClick,
 }) => {
   const theme = useTheme();
-
+  const { roles } = useSelector((state) => state.profile);
+  const admin = roles && roles.includes('admin');
   return (
     <HeadingContainer>
       <Author
@@ -30,7 +31,7 @@ const CommentAuthorHeading: React.FC<TCommentAuthorHeadingProps> = ({
         nickname={nickname ?? username}
         imageSrc={image}
         createAt={date} />
-      {isAuthor ? (<DeleteIcon color={theme.button.red.default} onClick={onDeleteClick} />)
+      {isAuthor || admin ? (<DeleteIcon color={theme.button.red.default} onClick={onDeleteClick} />)
         : null}
     </HeadingContainer>
   );

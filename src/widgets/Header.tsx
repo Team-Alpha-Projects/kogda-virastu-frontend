@@ -239,7 +239,9 @@ const Header: FC = () => {
   const onOpenMenuClick: MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation(); dispatch(openMenu());
   };
-  const closeMenuClick: MouseEventHandler<HTMLElement> = () => dispatch(closeMenu());
+  const closeMenuClick: MouseEventHandler<HTMLElement> = () => {
+    if (isMenuOpen) dispatch(closeMenu());
+  };
 
   return (
     <HeaderStyled onClick={closeMenuClick}>

@@ -1,16 +1,16 @@
 import React, {
   useEffect, FC, ChangeEventHandler, FormEventHandler, useState,
 } from 'react';
+import 'react-quill/dist/quill.snow.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import { useSelector, useDispatch } from '../../services/hooks';
+import RichEditor from './rich-editor';
 
 import {
   setTitle,
   setDescription,
-  setBody,
   setTags,
-  setImage,
   openConfirm,
   articleDeleteClear,
   articlePatchClear,
@@ -20,6 +20,7 @@ import {
   getArticleThunk,
   patchArticleThunk,
   postArticleThunk,
+  postImageThunk,
 } from '../../thunks';
 import {
   ButtonContainer,
@@ -38,14 +39,13 @@ import {
   PublishPostButton,
   SavePostButton,
   FieldAboutArticle,
-  FieldTextArticle,
 } from '../../ui-lib';
 
 const EditorForm: FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const {
-    title, description, body, tags, link,
+    title, description, tags,
   } = useSelector((state) => state.forms.article) ?? {};
   const {
     isArticleFetching,
@@ -109,18 +109,16 @@ const EditorForm: FC = () => {
     evt.target.style.height = `${evt.target.scrollHeight + 2}px`;
   };
 
-  const onChangeBody : ChangeEventHandler<HTMLTextAreaElement> = (evt) => {
-    dispatch(setBody(evt.target.value));
-    // eslint-disable-next-line no-param-reassign
-    evt.target.style.height = `${evt.target.scrollHeight + 2}px`;
-  };
-
   const onChangeTags : ChangeEventHandler<HTMLInputElement> = (evt) => {
     dispatch(setTags(evt.target.value));
   };
 
   const onChangeImage : ChangeEventHandler<HTMLInputElement> = (evt) => {
-    dispatch(setImage(evt.target.value));
+    if (evt.target.files) {
+      const articleImage = new FormData();
+      articleImage.append('file', evt.target.files[0]);
+      dispatch(postImageThunk(articleImage));
+    }
   };
 
   const submitForm : FormEventHandler<HTMLFormElement> = (evt) => {
@@ -172,12 +170,8 @@ const EditorForm: FC = () => {
             }
             onChange={onChangeDescription} />
           <FieldUrl
-            value={link === '' ? '' : link || initialArticle?.link || ''}
             onChange={onChangeImage} />
-          <FieldTextArticle
-            value={body === '' ? '' : body || initialArticle?.body || ''}
-            onChange={onChangeBody}
-            minHeight={300} />
+          <RichEditor />
           <FieldTags
             value={tags === '' ? '' : tags || ''}
             onChange={onChangeTags} />

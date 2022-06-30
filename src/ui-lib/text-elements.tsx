@@ -146,6 +146,7 @@ export const HeaderFiveText = styled.h5<THeaderTextProps>`
   overflow: hidden;
   ${({ marginCSS }) => (marginCSS || '')};
   ${({ paddingCSS }) => (paddingCSS || '')};
+  ${({ onClick }) => (onClick ? 'cursor: pointer;' : '')}
   
   @media screen and (max-width: ${tabletBreakpoint}px) {
     font-family: ${defaultH5Mobile.family};

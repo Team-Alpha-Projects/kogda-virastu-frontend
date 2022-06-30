@@ -1,10 +1,10 @@
-import { batch } from 'react-redux';
 import { AxiosError } from 'axios';
 import { patchCurrentUser } from '../services/api';
 import {
   settingsPatchFailed,
   settingsPatchRequested,
   settingsPatchSucceeded,
+  settingsResetUpdateSucceeded,
   setUser,
   resetFormProfile,
 } from '../store';
@@ -36,13 +36,14 @@ const patchCurrentUserThunk: AppThunk = () => async (dispatch, getState) => {
         },
       },
     } = await patchCurrentUser(userData);
-    batch(() => {
-      dispatch(setUser({
-        username, email, bio, image, nickname,
-      }));
-      dispatch(resetFormProfile());
-      dispatch(settingsPatchSucceeded());
-    });
+    dispatch(setUser({
+      username, email, bio, image, nickname,
+    }));
+    dispatch(resetFormProfile());
+    dispatch(settingsPatchSucceeded());
+    setTimeout(() => {
+      dispatch(settingsResetUpdateSucceeded());
+    }, 1000);
   } catch (error) {
     dispatch(settingsPatchFailed(makeErrorObject(error as AxiosError<TAPIError>)));
   }

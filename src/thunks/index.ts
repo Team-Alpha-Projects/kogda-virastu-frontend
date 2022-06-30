@@ -1,4 +1,5 @@
 import getAllTagsThunk from './get-all-tags-thunk';
+import getPopularTags from './get-popular-tags-thunk';
 import addLikeThunk from './add-like-thunk';
 import createCommentThunk from './create-comment-thunk';
 import deleteLikeThunk from './delete-like-thunk';
@@ -20,6 +21,14 @@ import postArticleThunk from './post-article-thunk';
 import setTopLikedThunk from './set-top-liked-thunk';
 import setNewPostsThunk from './set-new-posts-thunk';
 import getAllPostsThunk from './get-all-posts-thunk';
+import postImageThunk from './post-image-thunk';
+import getUsersThunk from './get-users-thunk';
+import patchRolesThunk from './patch-roles-thunk';
+import getPendingFeedThunk from './get-pending-feed-thunk';
+import publishArticleThunk from './post-publish-thunk';
+import holdArticleThunk from './post-hold-article-thunk';
+import declineArticleThunk from './post-decline-article-thunk';
+import declineCommentThunk from './decline-comment-thunk';
 
 export {
   createCommentThunk,
@@ -28,6 +37,7 @@ export {
   getPrivateFeedThunk,
   getPublicFeedThunk,
   getAllTagsThunk,
+  getPopularTags,
   deleteLikeThunk,
   addLikeThunk,
   getUserProfileThunk,
@@ -44,4 +54,12 @@ export {
   setTopLikedThunk,
   setNewPostsThunk,
   getAllPostsThunk,
+  postImageThunk,
+  getUsersThunk,
+  patchRolesThunk,
+  getPendingFeedThunk,
+  publishArticleThunk,
+  holdArticleThunk,
+  declineArticleThunk,
+  declineCommentThunk,
 };

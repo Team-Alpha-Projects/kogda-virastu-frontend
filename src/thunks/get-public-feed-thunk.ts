@@ -1,4 +1,3 @@
-import { batch } from 'react-redux';
 import { AxiosError } from 'axios';
 import { fetchPublicFeed } from '../services/api';
 import {
@@ -16,16 +15,12 @@ const getPublicFeedThunk: AppThunk = (
   params: TAPIParamsObject,
 ) => async (dispatch) => {
   try {
-    batch(() => {
-      dispatch(publicFeedRequested());
-    });
+    dispatch(publicFeedRequested());
     const
       { data: { articles, articlesCount } } = await fetchPublicFeed(params);
-    batch(() => {
-      dispatch(setViewFeed(articles));
-      dispatch(setFeedCount(articlesCount));
-      dispatch(publicFeedSucceeded());
-    });
+    dispatch(setViewFeed(articles));
+    dispatch(setFeedCount(articlesCount));
+    dispatch(publicFeedSucceeded());
   } catch (error) {
     dispatch(publicFeedFailed(makeErrorObject(error as AxiosError<TAPIError>)));
   }

@@ -2,8 +2,11 @@ export type TUser = {
   email: string;
   username: string;
   bio?: string;
-  image?:string;
+  image?: string;
   nickname?: string;
+  invite?: string;
+  roles?: string[];
+  generatedInvite?: string;
 };
 
 // Исправлено и переименовано по модели данных сервера
@@ -14,9 +17,16 @@ export type TProfile = {
   email: string;
   bio?: string;
   nickname?: string;
+  followingTags?: Array<string>;
+  roles?: string[];
 };
 
 export type TTags = Array<string>;
+
+export type TPopularTags = {
+  count: number;
+  name: string;
+};
 
 export type TArticle = {
   author: TProfile;
@@ -27,6 +37,7 @@ export type TArticle = {
   favorited: boolean;
   favoritesCount: number;
   slug: string;
+  state: string;
   tagList: TTags;
   title: string;
   updatedAt: string;

@@ -2,16 +2,20 @@ import React, { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import { IntlProvider } from 'react-intl';
-import { batch } from 'react-redux';
 import { useDispatch, useSelector } from '../services/hooks';
-
 import { jwt } from '../services/api';
-
 import {
-  deleteArticleThunk, getAllPostsThunk, getAllTagsThunk, getPublicFeedThunk, getUserThunk,
+  deleteArticleThunk,
+  getUserThunk,
+  getPopularTags,
 } from '../thunks';
 import basicThemes, { defaultTheme } from '../themes/index';
-import { closeConfirm, setLanguage } from '../store';
+import {
+  closeConfirm,
+  setLanguage,
+  clearErrorObject,
+  articleDeleteClear,
+} from '../store';
 import Header from '../widgets/Header';
 import Footer from '../widgets/Footer';
 import Profile from '../pages/profile';
@@ -22,8 +26,8 @@ import Register from '../pages/register';
 import Settings from '../pages/settings';
 import ArticlePage from '../pages/article-page';
 import Editor from '../pages/editor';
-import { Modal } from '../widgets';
-
+import Admin from '../pages/admin';
+import { Modal, ErrorModal } from '../widgets';
 import { IGenericVoidHandler } from '../types/widgets.types';
 
 const App = () => {
@@ -33,24 +37,22 @@ const App = () => {
   const { isDeleteConfirmOpen } = useSelector((state) => state.system);
   const { username, nickname } = useSelector((state) => state.profile);
   const slug = useSelector((state) => state.view.article?.slug) ?? '';
-  const onConfirmDelete : IGenericVoidHandler = () => {
-    batch(() => {
-      dispatch(deleteArticleThunk(slug));
-      dispatch(closeConfirm());
-    });
+  const { errorObject } = useSelector((state) => state.api);
+  const onConfirmDelete: IGenericVoidHandler = () => {
+    dispatch(deleteArticleThunk(slug));
+    dispatch(closeConfirm());
+    setTimeout(() => {
+      dispatch(articleDeleteClear());
+    }, 500);
   };
-  const onConfirmClose : IGenericVoidHandler = () => dispatch(closeConfirm());
+  const onConfirmClose: IGenericVoidHandler = () => dispatch(closeConfirm());
+  const onConfirmErrorClose: IGenericVoidHandler = () => dispatch(clearErrorObject());
 
   useEffect(() => {
-    batch(() => {
-      dispatch(getAllPostsThunk());
-      dispatch(getAllTagsThunk());
-    });
+    dispatch(getPopularTags());
+
     if (jwt.test()) {
-      batch(() => {
-        dispatch(getUserThunk());
-        dispatch(getPublicFeedThunk());
-      });
+      dispatch(getUserThunk());
     }
   }, [dispatch, username, nickname]);
 
@@ -63,10 +65,11 @@ const App = () => {
 
   return (
     <IntlProvider locale={currentLang} messages={vocabularies[currentLang]}>
-      <ThemeProvider theme={
-        themes[currentTheme ?? defaultTheme]
-        ?? basicThemes[currentTheme ?? defaultTheme]
-      }>
+      <ThemeProvider
+        theme={
+          themes[currentTheme ?? defaultTheme]
+          ?? basicThemes[currentTheme ?? defaultTheme]
+        }>
         <Header />
         <Routes>
           <Route path='/' element={<Main />} />
@@ -76,11 +79,17 @@ const App = () => {
           <Route path='/editArticle/:slug' element={<Editor />} />
           <Route path='/profile/:username' element={<Profile />} />
           <Route path='/settings' element={<Settings />} />
+          <Route path='/admin' element={<Admin />} />
           <Route path='/article/:slug' element={<ArticlePage />} />
           <Route path='*' element={<NotFound />} />
         </Routes>
         <Footer />
-        {isDeleteConfirmOpen && <Modal onClose={onConfirmClose} onSubmit={onConfirmDelete} />}
+        {isDeleteConfirmOpen && (
+          <Modal onClose={onConfirmClose} onSubmit={onConfirmDelete} />
+        )}
+        {errorObject && (
+          <ErrorModal onClose={onConfirmErrorClose} onSubmit={onConfirmErrorClose} />
+        )}
       </ThemeProvider>
     </IntlProvider>
   );

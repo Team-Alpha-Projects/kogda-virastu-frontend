@@ -11,7 +11,7 @@ const TopAnnounce = styled.div`
   flex-flow: column nowrap;
   @media screen and (max-width: 767px) {
     display: none;
-    }
+  }
 `;
 
 const TopContainer = styled.ul`
@@ -32,7 +32,7 @@ const TopContainer = styled.ul`
 
   @media screen and (max-width: 767px) {
     display: none;
-    }
+  }
 `;
 
 const ItemWrapper = styled.li`
@@ -45,49 +45,55 @@ const ItemWrapper = styled.li`
   margin-inline-start: 0;
   margin-inline-end: 0;
   padding-inline-start: 0;
+
+  .link {
+    display: flex;
+    width: 100%;
+    text-decoration: none;
+  }
 `;
 
-const TopAnnounceWidget : FC<TTopAnnounceWidgetProps> = ({ caption }) => {
-  const topArticles = useSelector((state) => state.view.topFeed) ?? [];
-  return (
-    <TopAnnounce>
-      <HeaderThreeText paddingCSS='padding-bottom: 24px;'>
-        {caption}
-      </HeaderThreeText>
-      <TopContainer>
-        {topArticles.map((article: TArticle, index) => {
-          const {
-            author: {
-              username,
-              nickname,
-              image,
-            },
-            title,
-            createdAt,
-            favorited,
-            favoritesCount,
-            slug,
-          } = article;
-          const nope = (): void => {
-          };
-          return (
-            <ItemWrapper key={slug}>
-              {!!index && <Divider distance={24} />}
-              <BriefPostAnnounceWidget
-                username={username}
-                nickname={nickname ?? username}
-                image={image}
-                title={title}
-                date={new Date(createdAt)}
-                isLiked={favorited}
-                likesCount={favoritesCount}
-                onLikeClick={nope} />
-            </ItemWrapper>
-          );
-        })}
-      </TopContainer>
-    </TopAnnounce>
-  );
+const TopAnnounceWidget: FC<TTopAnnounceWidgetProps> = ({ caption }) => {
+  const topArticles = useSelector((state) => state.view.topFeed);
+
+  if (topArticles) {
+    return (
+      <TopAnnounce>
+        <HeaderThreeText paddingCSS='padding-bottom: 24px;'>
+          {caption}
+        </HeaderThreeText>
+        <TopContainer>
+          {topArticles.map((article: TArticle, index) => {
+            const {
+              author: { username, nickname, image },
+              title,
+              createdAt,
+              favorited,
+              favoritesCount,
+              slug,
+            } = article;
+            const nope = (): void => {};
+            return (
+              <ItemWrapper key={slug}>
+                {!!index && <Divider distance={24} />}
+                <BriefPostAnnounceWidget
+                  slug={slug}
+                  username={username}
+                  nickname={nickname ?? username}
+                  image={image}
+                  title={title}
+                  date={new Date(createdAt)}
+                  isLiked={favorited}
+                  likesCount={favoritesCount}
+                  onLikeClick={nope} />
+              </ItemWrapper>
+            );
+          })}
+        </TopContainer>
+      </TopAnnounce>
+    );
+  }
+  return <div>Loading Articles...</div>;
 };
 
 export default TopAnnounceWidget;

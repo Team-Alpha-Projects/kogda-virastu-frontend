@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from '../services/hooks';
@@ -12,6 +12,11 @@ const Page = styled.section`
   z-index: 10;
   display: flex;
   justify-content: center;
+
+  @media screen and (max-width: 600px) {
+    box-sizing: border-box;
+    padding: 0 20px 0 20px;
+  }
 `;
 
 const Editor = () => {
@@ -22,7 +27,7 @@ const Editor = () => {
   )
     && jwt.test();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!isLogged) {
       navigate('/login');
     }

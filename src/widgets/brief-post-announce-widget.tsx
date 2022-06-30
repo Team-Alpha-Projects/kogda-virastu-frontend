@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-
+import { useNavigate } from 'react-router-dom';
 import AuthorHeadingWidget from './author-heading-widget';
 import { TBriefPostAnnounceProps } from '../types/widgets.types';
 import { HeaderFiveText } from '../ui-lib';
@@ -17,12 +17,11 @@ const BriefPostAnnounceWrapper = styled.article`
   @media screen and (max-width: 1918px) {
     width: 100%;
   }
-  @media screen and (max-width: 639px) {
-    width: 280px;
-  }
+  
 `;
 
 const BriefPostAnnounceWidget : React.FC<TBriefPostAnnounceProps> = ({
+  slug,
   username,
   nickname,
   title,
@@ -31,21 +30,24 @@ const BriefPostAnnounceWidget : React.FC<TBriefPostAnnounceProps> = ({
   isLiked,
   likesCount,
   onLikeClick,
-}) => (
-  <BriefPostAnnounceWrapper>
-    <AuthorHeadingWidget
-      username={username}
-      nickname={nickname}
-      date={date}
-      image={image}
-      isAuthor={false}
-      isLiked={isLiked}
-      likesCount={likesCount}
-      onLikeClick={onLikeClick} />
-    <HeaderFiveText marginCSS='margin-right: 70px;' color={primaryBlack}>
-      {title}
-    </HeaderFiveText>
-  </BriefPostAnnounceWrapper>
-);
+}) => {
+  const navigate = useNavigate();
+  return (
+    <BriefPostAnnounceWrapper>
+      <AuthorHeadingWidget
+        username={username}
+        nickname={nickname}
+        date={date}
+        image={image}
+        isAuthor={false}
+        isLiked={isLiked}
+        likesCount={likesCount}
+        onLikeClick={onLikeClick} />
+      <HeaderFiveText onClick={() => navigate(`/article/${slug}`)} marginCSS='margin-right: 70px;' color={primaryBlack}>
+        {title}
+      </HeaderFiveText>
+    </BriefPostAnnounceWrapper>
+  );
+};
 
 export default BriefPostAnnounceWidget;

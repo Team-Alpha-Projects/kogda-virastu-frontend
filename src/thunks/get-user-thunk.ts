@@ -1,5 +1,4 @@
 import { AxiosError } from 'axios';
-import { batch } from 'react-redux';
 import { AppThunk } from '../store/store.types';
 import {
   userFetchRequested,
@@ -17,18 +16,16 @@ const getUserProfileThunk: AppThunk = () => async (dispatch) => {
     const {
       data: {
         user: {
-          username, email, bio, image, token, nickname,
+          username, email, bio, image, token, nickname, roles,
         },
       },
     } = await fetchCurrentUser();
     jwt.set(token);
-    batch(() => {
-      dispatch(setUser({
-        username, email, bio, image, nickname,
-      }));
-      dispatch(userFetchSucceeded());
-      dispatch(onLogin());
-    });
+    dispatch(setUser({
+      username, email, bio, image, nickname, roles,
+    }));
+    dispatch(userFetchSucceeded());
+    dispatch(onLogin());
   } catch (error) {
     dispatch(userFetchFailed(makeErrorObject(error as AxiosError<TAPIError>)));
   }

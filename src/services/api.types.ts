@@ -1,8 +1,9 @@
 import {
-  TArticle, TComment, TProfile, TTags, TUser,
+  TArticle, TComment, TProfile, TTags, TUser, TPopularTags,
 } from '../types/types';
 
 export type TAPINewUser = {
+  invite: string,
   user: {
     username: string;
     email: string;
@@ -18,7 +19,9 @@ export type TAPIAuth = {
     bio?: string;
     image?: string;
     token: string;
-    nickname: string
+    nickname: string;
+    invite: string;
+    roles: string[];
   };
 };
 
@@ -30,14 +33,29 @@ export type TAPILoginUser = {
 };
 
 export type TAPIUser = {
-  user: TUser;
+  name: number | undefined;
+  roles: string[],
+  _id?: string[],
+  bio?: string[],
+  favorites?: string[],
+  followingUsers?: string[],
+  followingTags?: string[],
+  email: string,
+  salt? : string,
+  hash?: string,
+  nickname: string,
+  createdAt?: string,
+  updatedAt?: string,
+  __v?: number,
+  image?: string,
+  username: string,
 };
 
 export type TAPIPatchUserData = {
   email?: string;
   username?: string;
   bio?: string;
-  image?: string;
+  image?: string | FormData;
   password?: string;
   nickname?: string;
 };
@@ -73,6 +91,15 @@ export type TAPIPatchArticleData = {
 
 export type TAPITags = {
   tags: TTags;
+  followingTags: TTags
+};
+
+export type TAPIPopularTags = {
+  tags: TPopularTags[];
+};
+
+export type TAPIInvite = {
+  code: string;
 };
 
 export type TAPIComment = {
@@ -86,10 +113,30 @@ export type TAPIProfile = {
   profile: TProfile;
 };
 
+export type TAPIResponse = {
+  data: {
+    url: string;
+  }
+};
+
 export type TAPIErrors = {
   [error: string]: string;
 };
 export type TAPIError = {
   errors: TAPIErrors;
   statusCode: number;
+  url: string | undefined;
+  message: string | undefined;
 };
+
+export type TAPIUsers = Array<TAPIUser> | null;
+
+export type TAPIUsersRequest = {
+  users: Array<TAPIUser>;
+  usersCount: number;
+}
+
+export type TAPIUserData = {
+  users: Array<TAPIUser>;
+  usersCount?: number;
+}

@@ -1,5 +1,4 @@
 import { AxiosError, AxiosResponse } from 'axios';
-import { batch } from 'react-redux';
 import {
   followProfileDeleteRequested,
   followProfileDeleteSucceeded,
@@ -17,10 +16,8 @@ const unfollowProfileThunk: AppThunk = () => async (dispatch, getState) => {
   dispatch(followProfileDeleteRequested());
   try {
     const { data } = await deleteFollowProfile(username) as AxiosResponse<TAPIProfile>;
-    batch(() => {
-      dispatch(setViewProfile(data.profile));
-      dispatch(followProfileDeleteSucceeded());
-    });
+    dispatch(setViewProfile(data.profile));
+    dispatch(followProfileDeleteSucceeded());
   } catch (error) {
     dispatch(followProfileDeleteFailed(makeErrorObject(error as AxiosError<TAPIError>)));
   }

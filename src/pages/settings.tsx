@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import SettingsForm from '../widgets/forms/settings-form';
@@ -8,7 +8,14 @@ import { jwt } from '../services/api';
 const Page = styled.section`
   width: 100%;
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
+
+  @media screen and (max-width: 600px) {
+    box-sizing: border-box;
+    padding: 0 20px 0 20px;
+  }
 `;
 
 const Settings = () => {
@@ -19,7 +26,7 @@ const Settings = () => {
   )
     && jwt.test();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!isLogged) {
       navigate('/login');
     }

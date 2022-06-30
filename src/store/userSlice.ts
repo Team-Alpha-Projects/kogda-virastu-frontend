@@ -7,6 +7,7 @@ type TUserState = {
   bio?: string | null,
   image?: string | null,
   nickname?: string | null,
+  roles: string[] | null,
 };
 
 const initialState: TUserState = {
@@ -15,15 +16,19 @@ const initialState: TUserState = {
   bio: null,
   image: null,
   nickname: null,
+  roles: null,
 };
-
 const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    setUser: (state, action: PayloadAction<TUser>) => ({ ...state, ...action.payload }),
+    setUser: (state, action: PayloadAction<TUser>) => ({
+      ...state,
+      ...action.payload,
+    }),
     clearUser: (state) => ({
-      ...state, ...initialState,
+      ...state,
+      ...initialState,
     }),
   },
 });

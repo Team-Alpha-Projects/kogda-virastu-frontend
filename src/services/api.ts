@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable */
 import axios, { AxiosInstance, AxiosPromise, AxiosRequestConfig } from 'axios';
 import {
   API_ROOT,
@@ -9,6 +9,7 @@ import {
   FEED_ROUTE, JWT,
   PROFILES_ROUTE,
   TAGS_ROUTE,
+  ADMIN_ROUTE,
 } from '../constants';
 import {
   TAPINewUser,
@@ -18,11 +19,12 @@ import {
   TAPIParamsObject,
   TAPIArticle,
   TAPITags,
+  TAPIPopularTags,
   TAPIComments,
   TAPIComment,
   TAPIProfile,
   TAPIAuth,
-  TAPIPatchUserData, TAPIPatchArticleData,
+  TAPIPatchUserData, TAPIPatchArticleData, TAPIUser,
 } from './api.types';
 import {
   IDeleteArticle,
@@ -31,6 +33,7 @@ import {
   IFetchArticles,
   IFetchComments,
   IFetchTags,
+  IFetchPopularTags,
   IFetchUser,
   ILikeArticle,
   ILoginUser,
@@ -39,8 +42,14 @@ import {
   IPostArticle,
   IPostComment,
   IProfile,
+  ITag,
   IRegisterUser,
+  IPostInviteGeneration,
+  IFetchUsers,
+  IPatchRoles,
+  IModerArticle,
 } from '../types/API.types';
+import { UPLOAD_ROUTE } from '../constants/api.constants';
 
 const defaultRequestConfig : AxiosRequestConfig = {
   baseURL: API_ROOT,
@@ -135,9 +144,11 @@ export const registerUser : IRegisterUser = (
   username: string,
   email: string,
   password: string,
-  nickname,
+  nickname: string,
+  invite: string,
 ) : AxiosPromise<TAPIAuth> => {
   const registerData : TAPINewUser = {
+    invite,
     user: {
       username, email, password, nickname,
     },
@@ -147,7 +158,7 @@ export const registerUser : IRegisterUser = (
     data: registerData,
     method: 'post',
   };
-  return blogAPI(requestConfig);
+  return blogAPI(injectBearerToken(requestConfig));
 };
 
 export const fetchCurrentUser : IFetchUser = () : AxiosPromise<TAPIAuth> => {
@@ -194,7 +205,7 @@ export const patchCurrentUser : IPatchUser = (
       res = { ...res, bio };
     }
     if (image) {
-      res = { ...res, link: image };
+      res = { ...res, image };
     }
     if (nickname) {
       res = { ...res, nickname };
@@ -214,7 +225,6 @@ export const patchCurrentUser : IPatchUser = (
     data: patchData,
     method: 'put',
   };
-
   return blogAPI(injectBearerToken(requestConfig));
 };
 
@@ -368,6 +378,127 @@ export const deleteFollowProfile : IProfile = (username: string) : AxiosPromise<
   const requestConfig : AxiosRequestConfig = {
     url: `${PROFILES_ROUTE}/${username}/follow`,
     method: 'delete',
+  };
+  return blogAPI(injectBearerToken(requestConfig));
+};
+
+export const postFollowTag: ITag = (tagname: string) => {
+  const requestConfig : AxiosRequestConfig = {
+    url: `${TAGS_ROUTE}/${tagname}/follow`,
+    method: 'post',
+  };
+  return blogAPI(injectBearerToken(requestConfig));
+};
+
+export const deleteFollowTag: ITag = (tagname: string) => {
+  const requestConfig : AxiosRequestConfig = {
+    url: `${TAGS_ROUTE}/${tagname}/follow`,
+    method: 'delete',
+  };
+  return blogAPI(injectBearerToken(requestConfig));
+};
+
+export const fetchUserTags : IFetchTags = () : AxiosPromise<TAPITags> => {
+  const requestConfig : AxiosRequestConfig = {
+    url: `${TAGS_ROUTE}/follow`,
+    method: 'get',
+  };
+  return blogAPI(injectBearerToken(requestConfig));
+};
+
+export const fetchPopularTags : IFetchPopularTags = () : AxiosPromise<TAPIPopularTags> => {
+  const requestConfig : AxiosRequestConfig = {
+    url: `${TAGS_ROUTE}/top`,
+    method: 'get',
+  };
+  return blogAPI(injectBearerToken(requestConfig));
+};
+
+export const postGenerateInvite: IPostInviteGeneration = () => {
+  const requestConfig : AxiosRequestConfig = {
+    url: `${USER_ROUTE}/invites/new`,
+    method: 'post',
+  };
+  return blogAPI(injectBearerToken(requestConfig));
+};
+
+export const uploadImage = (postData: string | FormData) => {
+  const requestConfig : AxiosRequestConfig = {
+    url: UPLOAD_ROUTE,
+    method: 'post',
+    data: postData,
+    headers: { 'Content-Type': 'multipart/form-data' },
+  };
+  return blogAPI(injectBearerToken(requestConfig));
+};
+
+export const fetchTopArticles : IFetchArticles = () : AxiosPromise<TAPIArticles> => {
+  const requestConfig : AxiosRequestConfig = {
+    url: `${ARTICLES_ROUTE}/top`,
+    method: 'get',
+  };
+  return blogAPI(injectBearerToken(requestConfig));
+};
+
+export const fetchUsers : IFetchUsers = () => {
+  const requestConfig : AxiosRequestConfig = {
+    url: `${ADMIN_ROUTE}/users`,
+    method: 'get',
+  };
+  return blogAPI(injectBearerToken(requestConfig));
+};
+
+export const patchRoles : IPatchRoles = (
+  user: string,
+  roles: string[],
+) : AxiosPromise<TAPIUser> => {
+  const rolesData = {
+    roles,
+  };
+  const requestConfig : AxiosRequestConfig = {
+    url: `${ADMIN_ROUTE}/users/${user}/roles`,
+    method: 'patch',
+    data: rolesData,
+  };
+  return blogAPI(injectBearerToken(requestConfig));
+};
+
+export const fetchPendingArticles: IFetchArticles = (): AxiosPromise<TAPIArticles> => {
+  const requestConfig: AxiosRequestConfig = {
+    url: `${ADMIN_ROUTE}/articles/state/pending`,
+    method: 'get',
+  };
+  return blogAPI(injectBearerToken(requestConfig));
+};
+
+export const postPublishArticles: IModerArticle = (slug: string): AxiosPromise<TAPIArticle> => {
+  const requestConfig: AxiosRequestConfig = {
+    url: `${ADMIN_ROUTE}/articles/${slug}/publish`,
+    method: 'post',
+  };
+  return blogAPI(injectBearerToken(requestConfig));
+};
+
+export const postHoldArticles: IModerArticle = (slug: string): AxiosPromise<TAPIArticle> => {
+  const requestConfig: AxiosRequestConfig = {
+    url: `${ADMIN_ROUTE}/articles/${slug}/hold`,
+    method: 'post',
+  };
+  return blogAPI(injectBearerToken(requestConfig));
+};
+
+export const postDeclineArticles: IModerArticle = (slug: string): AxiosPromise<TAPIArticle> => {
+  const requestConfig: AxiosRequestConfig = {
+    url: `${ADMIN_ROUTE}/articles/${slug}/decline`,
+    method: 'post',
+  };
+  return blogAPI(injectBearerToken(requestConfig));
+};
+
+export const declineComment : IDeleteComment = (slug: string, id: string) : AxiosPromise<null> => {
+  const requestConfig : AxiosRequestConfig = {
+    url: `${ADMIN_ROUTE}/articles/${slug}/comments/${id}/decline`,
+    method: 'POST',
   };
   return blogAPI(injectBearerToken(requestConfig));
 };

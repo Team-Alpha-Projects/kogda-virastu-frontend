@@ -8,6 +8,8 @@ type TProfileFormState = {
   bio: string | null;
   image: string | null;
   password: string | null;
+  confirmPassword: string | null;
+  generatedInvite: string | null;
 };
 
 const initialState: TProfileFormState = {
@@ -17,8 +19,9 @@ const initialState: TProfileFormState = {
   bio: null,
   image: null,
   password: null,
+  confirmPassword: null,
+  generatedInvite: null,
 };
-
 const profileSubSlice = createSlice({
   name: 'profile',
   initialState,
@@ -35,17 +38,24 @@ const profileSubSlice = createSlice({
     setBioProfile: (state, action: PayloadAction<string>) => ({
       ...state, bio: action.payload,
     }),
-    setImageProfile: (state, action: PayloadAction<string>) => ({
+    setImageProfile: (state, action: PayloadAction<string | null >) => ({
       ...state, image: action.payload,
     }),
     setPasswordProfile: (state, action: PayloadAction<string>) => ({
       ...state, password: action.payload,
+    }),
+    setConfirmPasswordProfile: (state, action: PayloadAction<string>) => ({
+      ...state, confirmPassword: action.payload,
     }),
     setFormProfile: (state, action: PayloadAction<TUser>) => ({
       ...state, ...action.payload,
     }),
     resetFormProfile: (state) => ({
       ...state, ...initialState,
+    }),
+    setGeneratedInvite: (state, action: PayloadAction<string>) => ({
+      ...state,
+      generatedInvite: action.payload,
     }),
   },
 });
@@ -58,7 +68,9 @@ export const {
   setBioProfile,
   setImageProfile,
   setPasswordProfile,
+  setConfirmPasswordProfile,
   setFormProfile,
   resetFormProfile,
+  setGeneratedInvite,
 } = profileSubSlice.actions;
 export default profileReducer;

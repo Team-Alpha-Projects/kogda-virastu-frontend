@@ -22,6 +22,7 @@ import {
 
 import {
   EditPostButton,
+  ConfirmErrorButton,
   DeletePostButton,
   OpenMenuButton,
   FollowButton,
@@ -36,6 +37,7 @@ import {
   MenuNewPostButton,
   MenuSettingsButton,
   MenuLogoutButton,
+  MenuAdminButton,
 } from './buttons';
 
 import {
@@ -43,11 +45,13 @@ import {
   FieldLogin,
   FieldEmail,
   FieldPassword,
+  FieldConfirmPassword,
   FieldNameArticle,
   FieldDescriptionArticle,
   FieldTags,
   FieldNick,
   FieldProfileImage,
+  FieldInvite,
 }
   from './inputs/input-fields';
 import {
@@ -66,6 +70,8 @@ import {
 } from './text-elements';
 
 import Divider from './divider';
+
+import Preloader from './preloader';
 
 const GlobalStyles = createGlobalStyle`
   ${normalize}
@@ -91,6 +97,7 @@ export {
   EyeIcon,
   EyeNoIcon,
   EditPostButton,
+  ConfirmErrorButton,
   DeletePostButton,
   OpenMenuButton,
   FollowButton,
@@ -107,7 +114,9 @@ export {
   FieldLogin,
   FieldEmail,
   FieldPassword,
+  FieldConfirmPassword,
   FieldNick,
+  FieldInvite,
   FieldNameArticle,
   FieldDescriptionArticle,
   FieldTags,
@@ -125,4 +134,6 @@ export {
   MenuSettingsButton,
   MenuLogoutButton,
   FieldTextComment,
+  MenuAdminButton,
+  Preloader,
 };

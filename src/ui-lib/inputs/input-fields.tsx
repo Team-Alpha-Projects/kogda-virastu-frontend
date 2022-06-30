@@ -19,7 +19,7 @@ export const FieldUrl: FC<TFieldInput> = ({
     <InputField
       placeholder={placeholder}
       name='FieldURL'
-      type='url'
+      type='file'
       errorText={errorText}
       error={error}
       onFocus={onFocus}
@@ -46,7 +46,7 @@ export const FieldProfileImage: FC<TFieldInput> = ({
     <InputField
       placeholder={placeholder}
       name='FieldProfileImage'
-      type='url'
+      type='file'
       errorText={errorText}
       error={error}
       onBlur={onBlur}
@@ -55,7 +55,8 @@ export const FieldProfileImage: FC<TFieldInput> = ({
       onChange={onChange}
       labelText={intl.messages.urlImage as string}
       icon={<PaperClipIcon color='grey' />}
-      disabled={disabled} />
+      disabled={disabled}
+      accept='image/*' />
   );
 };
 export const FieldLogin: FC<TFieldInput> = ({
@@ -85,7 +86,7 @@ export const FieldLogin: FC<TFieldInput> = ({
   );
 };
 export const FieldNick: FC<TFieldInput> = ({
-  value,
+  value = '',
   onFocus = undefined,
   onBlur = undefined,
   onChange,
@@ -108,6 +109,32 @@ export const FieldNick: FC<TFieldInput> = ({
       onChange={onChange}
       disabled={disabled}
       labelText={intl.messages.nickname as string} />
+  );
+};
+export const FieldInvite: FC<TFieldInput> = ({
+  value = '',
+  onFocus = undefined,
+  onBlur = undefined,
+  onChange,
+  placeholder = '',
+  error = false,
+  errorText = '',
+  disabled = false,
+}) => {
+  const intl = useIntl();
+  return (
+    <InputField
+      placeholder={placeholder}
+      name='FieldInvite'
+      type='text'
+      errorText={errorText}
+      error={error}
+      onBlur={onBlur}
+      onFocus={onFocus}
+      value={value}
+      onChange={onChange}
+      disabled={disabled}
+      labelText={intl.messages.invite as string} />
   );
 };
 export const FieldEmail: FC<TFieldInput> = ({
@@ -182,6 +209,54 @@ export const FieldPassword: FC<TFieldInput & { label?: string, name?: string }> 
 FieldPassword.defaultProps = {
   label: undefined,
   name: 'FieldPassword',
+};
+
+export const FieldConfirmPassword: FC<TFieldInput & { label?: string, name?: string }> = ({
+  name = 'FieldConfirmPassword',
+  label = undefined,
+  value,
+  onFocus = undefined,
+  onBlur = undefined,
+  onChange,
+  placeholder = '',
+  error = false,
+  errorText = '',
+  disabled = false,
+}) => {
+  const intl = useIntl();
+  const [passwordState,
+    setPasswordState] = useState<'password' | 'text'>('password');
+  const [passwordIcon, setPasswordIcon] = useState(<EyeNoIcon color='grey' />);
+  const onIconClick = () => {
+    if (passwordState === 'password') {
+      setPasswordState('text');
+      setPasswordIcon(<EyeIcon color='grey' />);
+    } else {
+      setPasswordState('password');
+      setPasswordIcon(<EyeNoIcon color='grey' />);
+    }
+  };
+  return (
+    <InputField
+      placeholder={placeholder}
+      name={name}
+      type={passwordState}
+      errorText={errorText}
+      error={error}
+      onBlur={onBlur}
+      onFocus={onFocus}
+      disabled={disabled}
+      value={value}
+      onChange={onChange}
+      labelText={label || intl.messages.confirmPassword as string}
+      icon={passwordIcon}
+      onIconClick={onIconClick} />
+  );
+};
+
+FieldConfirmPassword.defaultProps = {
+  label: undefined,
+  name: 'FieldConfirmPassword',
 };
 
 export const FieldDescriptionArticle: FC<TFieldInput> = ({

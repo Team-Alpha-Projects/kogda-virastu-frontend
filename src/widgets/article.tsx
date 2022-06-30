@@ -1,15 +1,27 @@
-import React, { FC, MouseEventHandler } from 'react';
+import React, { FC, MouseEventHandler, useEffect } from 'react';
 import { FormattedDate } from 'react-intl';
+import DOMPurify from 'isomorphic-dompurify';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from '../services/hooks';
 import {
   addLikeThunk, deleteLikeThunk,
+  publishArticleThunk,
+  getPendingFeedThunk,
+  holdArticleThunk,
+  declineArticleThunk,
+  getPublicFeedThunk,
 } from '../thunks';
 import { DeletePostButton, EditPostButton } from '../ui-lib';
 import { openConfirm } from '../store';
 import BarTags from './bar-tags';
 import Likes from './likes';
+import {
+  PublishButton,
+  RejectButton,
+  PublishedButton,
+  RemoveFromPublicationButton,
+} from '../ui-lib/buttons';
 
 type TArticleProps = {
   slug: string;
@@ -43,13 +55,13 @@ const ArticleTitle = styled.h1`
 
 const ArticleActionsContainer = styled.div`
   display: flex;
-  flex-flow: row wrap;
   justify-content: space-between;
-  && > button {
-    width:233px;
-    @media screen  and (max-width:725px) {
-      width:175px;
+  @media screen and (max-width:767px) {
+    flex-wrap:wrap;
+    &:first-child {
+      margin-top: 46px;
     }
+    row-gap: 10px;
   }
 `;
 
@@ -89,12 +101,29 @@ const ArticleImage = styled.img`
   height: 100%;
 `;
 
-const ArticleBody = styled.p`
+const ArticleBody = styled.div`
   font-family: ${({ theme: { text18: { family } } }) => family};
   font-size: ${({ theme: { text18: { size } } }) => size}px ;
   line-height: ${({ theme: { text18: { height } } }) => height}px;
   font-weight: ${({ theme: { text18: { weight } } }) => weight};
   margin: 0;
+
+  > blockquote {
+    border-left: 4px solid #ccc;
+    margin: 5px 0 5px;
+    padding-left: 16px;
+  }
+
+  > pre {
+    background-color: #23241f;
+    color: #f8f8f2;
+    overflow: visible;
+    white-space: pre-wrap;
+    margin: 10px;
+    padding: 5px 10px;
+    box-sizing: border-box;
+  }
+
   @media screen and (max-width:768px) {
     font-family: ${({ theme: { text16: { family } } }) => family};
     font-size: ${({ theme: { text16: { size } } }) => size}px ;
@@ -110,26 +139,66 @@ const ArticleActions: FC<TArticleActionsProps> = ({ onClickEdit, onClickDelete }
   </ArticleActionsContainer>
 );
 
+const ArticleAdminActions: FC = () => {
+  const dispatch = useDispatch();
+  const { article } = useSelector((state) => state.view);
+
+  const onPublishClick = () => {
+    dispatch(publishArticleThunk(article?.slug));
+    setTimeout(() => {
+      dispatch(getPublicFeedThunk());
+    }, 300);
+  };
+
+  const onRemoveClick = () => {
+    dispatch(holdArticleThunk(article?.slug));
+  };
+
+  const onRejectClick = () => {
+    dispatch(declineArticleThunk(article?.slug));
+  };
+
+  useEffect(() => {
+    dispatch(getPendingFeedThunk());
+  }, [dispatch]);
+
+  return (
+    <>
+      {article?.state === 'published' && (
+        <ArticleActionsContainer>
+          <PublishedButton onClick={onRemoveClick} />
+          <RemoveFromPublicationButton onClick={onRemoveClick} />
+        </ArticleActionsContainer>
+      )}
+      {article?.state === 'pending' && (
+        <ArticleActionsContainer>
+          <PublishButton onClick={onPublishClick} />
+          <RejectButton onClick={onRejectClick} />
+        </ArticleActionsContainer>
+      )}
+    </>
+  );
+};
+
 const Article: FC<TArticleProps> = ({ slug }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const { roles } = useSelector((state) => state.profile);
   const { article } = useSelector((state) => state.view);
   const currentUser = useSelector((state) => state.profile);
   const isAuthor = article?.author.username === currentUser.username;
-
+  const articleBody = DOMPurify.sanitize(article?.body || '');
   const onClickDelete = () => {
     if (article) {
       dispatch(openConfirm());
     }
   };
-
   const onClickEdit = () => {
     if (article && slug) {
       navigate(`/editArticle/${slug}`);
     }
   };
-
   const onClickLike = (ev: React.MouseEvent) => {
     ev.preventDefault();
     if (article?.favorited) {
@@ -146,6 +215,9 @@ const Article: FC<TArticleProps> = ({ slug }) => {
     <ArticleContainer>
       {isAuthor && (
         <ArticleActions onClickDelete={onClickDelete} onClickEdit={onClickEdit} />
+      )}
+      {roles && roles.includes('admin') && (
+        <ArticleAdminActions />
       )}
       <ArticleTitle>{article.title}</ArticleTitle>
       <ArticleAuthorContainer>
@@ -168,7 +240,7 @@ const Article: FC<TArticleProps> = ({ slug }) => {
       {article.link && (
         <ArticleImage src={article.link} />
       )}
-      <ArticleBody>{article.body}</ArticleBody>
+      <ArticleBody dangerouslySetInnerHTML={{ __html: articleBody }} />
       <BarTags tagList={article.tagList} />
     </ArticleContainer>
   );
