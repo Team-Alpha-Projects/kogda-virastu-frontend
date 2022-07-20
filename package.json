@@ -1,8 +1,8 @@
 {
+    "homepage": "https://team-alpha-projects.github.io/kogda-virastu-frontend/",
     "name": "react-redux-realworld-example-app",
     "version": "0.1.0",
     "private": true,
-    "homepage": "./",
     "devDependencies": {
         "@types/jest": "^27.4.1",
         "@types/react": "^18.0.7",
