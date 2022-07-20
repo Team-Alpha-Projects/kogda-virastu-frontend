@@ -42,7 +42,7 @@
 * Перейдите в созданную директорию
 `cd dev`
 * Клонируйте репозиторий в созданную директорию
-`git clone https://github.com/yandex-praktikum/kogda-virastu-frontend`
+`git clone https://github.com/Team-Alpha-Projects/kogda-virastu-frontend`
 * Откройте проект в любом редакторе кода
 * Выполните `npm install && npm start` в терминале, находясь в папке проекта.
 
